@@ -1,0 +1,5 @@
+
+.. index:: Examples
+
+Examples
+========

@@ -1,0 +1,137 @@
+@import url("classic.css");
+
+body {
+    font-size: 80%;
+}
+
+.tiny {
+    font-size: 75%;
+}
+
+th {
+    background-color: inherit;
+}
+
+table.docutils.logo td, table.docutils.logo th {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-style: none;
+    vertical-align: middle;
+}
+table.docutils.logo td > div {
+    padding-left: 20px;
+}
+
+div.plain .highlight, div.plain pre {
+    font-family: sans-serif;
+    background-color: white;
+    border: none;
+}
+
+div.footer {
+    padding: 0px;
+}
+
+div.body p {
+    margin: 8px 0;
+}
+
+div.admonition.note > p.admonition-title {
+    display: none;
+}
+
+div.body {
+    padding-bottom: 0px;
+}
+
+div.body p, div.body dd, div.body li, div.body blockquote {
+    line-height: 120%;
+}
+
+
+div.body h2 {
+    font-size: 140%;
+}
+div.body h3 {
+    font-size: 125%;
+}
+
+
+div.hidden {
+    display: none;
+    padding: 0px;
+    margin: 0px;
+    height: 0px;
+    max-height: 0px;
+}
+
+a.headerlink {
+    color: #355f7c;
+}
+
+a.headerlink:hover {
+    background-color: #355f7c;
+}
+
+div.coderef {
+    background: #eeffcc none repeat scroll 0 0;
+    border-style: solid none;
+    border-width: 1px medium;
+    border-color: #ac9;
+    color: #333333;
+    line-height: 120%;
+    padding: 5px;
+
+    /* background-color: #ecf0f3; */
+    font-family: monospace;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+div.coderef div.line-block {
+    margin-top: 0;
+}
+div.coderef div.line {
+    font-family: monospace;
+    font-weight: normal;
+    white-space: nowrap;
+}
+div.coderef code {
+    font-family: monospace;
+    font-weight: normal;
+}
+
+pre {
+    padding-bottom: 20px;
+}
+
+div.diffdefault pre {
+    background-color: #F0F0F0;
+    color: #4F4D45;
+    border: none;
+}
+div.diffdefault .gu {
+    color: #A2A29D;
+}
+div.diffdefault .gd {
+    color: #B11000;
+}
+div.diffdefault .gi {
+    color: #50A900;
+}
+
+div.diffmonokai pre {
+    background-color: #272822;
+    color: #F8F8F2;
+    border: none;
+}
+div.diffmonokai .gu {
+    color: #75715E;
+}
+div.diffmonokai .gd {
+    color: #F92672;
+}
+div.diffmonokai .gi {
+    color: #A6E22E;
+}
