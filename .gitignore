@@ -1,0 +1,12 @@
+# Build files
+/bin/build/
+/ahkcfg.ini
+/featshare.ico
+
+# Build documentation
+/doc/build/
+/doc/work/
+
+# Test environment
+/TestFeatures/
+/work/
