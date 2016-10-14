@@ -11,7 +11,7 @@ the target project has evolved from the common origin - and that outside of a ve
 stand-alone setup.
 Its strengths lie in the high customization of configuration and its flexibility of how to integrate the features.
 
-For more information read the documentation avaliable in each [release](/releases/latest).
+For more information read the documentation avaliable in each [release](../../releases/latest).
 
 
 **Third-Party Software**
