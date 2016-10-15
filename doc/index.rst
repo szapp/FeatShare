@@ -62,9 +62,9 @@ Third-Pary Software
 -------------------
 The following third-party software is used (without adding any modifications).
 
-- `MPRESS v2.19 <http://autohotkey.com/mpress/mpress_web.htm>`_, Copyright (C) 2007-2012 *MATCODE Software*, `License <http://github.com/szapp/egory/blob/master/mpress/LICENSE>`_
-- `AutoHotkey-JSON v2.1.1 <http://github.com/cocobelgica/AutoHotkey-JSON>`_, 2013-2016 *cocobelgica*, `License <http://github.com/szapp/egory/blob/master/lib/AutoHotkey-JSON/LICENSE>`_
-- `Class_RichEdit v0.1.05.00 <http://github.com/AHK-just-me/Class_RichEdit>`_, 2013-2015 *just me*, `License <http://github.com/szapp/egory/blob/master/lib/Class_RichEdit/LICENSE>`_
+- `MPRESS v2.19 <http://autohotkey.com/mpress/mpress_web.htm>`_, Copyright (C) 2007-2012 *MATCODE Software*, `License <http://github.com/szapp/FeatShare/blob/master/mpress/LICENSE>`_
+- `AutoHotkey-JSON v2.1.1 <http://github.com/cocobelgica/AutoHotkey-JSON>`_, 2013-2016 *cocobelgica*, `License <http://github.com/szapp/FeatShare/blob/master/lib/AutoHotkey-JSON/LICENSE>`_
+- `Class_RichEdit v0.1.05.00 <http://github.com/AHK-just-me/Class_RichEdit>`_, 2013-2015 *just me*, `License <http://github.com/szapp/FeatShare/blob/master/lib/Class_RichEdit/LICENSE>`_
 
 
 .. Small hack to have toc in CHM side bar but not visible on home page.
