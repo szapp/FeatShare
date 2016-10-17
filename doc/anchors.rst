@@ -13,7 +13,7 @@ Anchors
     anchors/hooks
     anchors/conditional
 
-This is one anchor with a complete list of settings.
+This is an example anchor with a complete list of settings.
 
 .. container:: coderef
 
@@ -36,7 +36,7 @@ This is one anchor with a complete list of settings.
     |     :std:term:`"storeVars" <storeVars>`: {
     |         "max_const": "$1"
     |     },
-    |     :std:term:`"hook" <hook>`: {
+    |     :ref:`"hook" <anchors.hook>`: {
     |         :std:term:`"start" <hook.start>`: "$0",
     |         :std:term:`"length" <hook.length>`: "$0",
     |         :std:term:`"before" <hook.before>`: true,
@@ -44,16 +44,16 @@ This is one anchor with a complete list of settings.
     |             "$1": "{idx}"
     |         }
     |     },
-    |     :std:term:`"insert" <insert>`: {
+    |     :ref:`"insert" <anchors.insert>`: {
     |         :std:term:`"string" <insert.string>`: "const int {const_name}{ :const_name:19}= {idx};\n",
     |         :std:term:`"replace" <insert.replace>`: {
     |             "const_name": "const"
     |         },
-    |         :std:term:`"stripTrailingNL" <stripTrailingNL>`: false,
-    |         :std:term:`"indent" <indent>`: {
-    |             :std:term:`"string" <indent.string>`: "",
-    |             :std:term:`"exclFirstLine" <indent.exclFirstLine>`: false,
-    |             :std:term:`"exclHeader" <indent.exclHeader>`: false
+    |         :std:term:`"stripTrailingNL" <insert.stripTrailingNL>`: false,
+    |         :std:term:`"indent" <insert.indent>`: {
+    |             :std:term:`"string" <insert.indent.string>`: "",
+    |             :std:term:`"exclFirstLine" <insert.indent.exclFirstLine>`: false,
+    |             :std:term:`"exclHeader" <insert.indent.exclHeader>`: false
     |         }
     |     },
     |     :std:term:`"newlinesBefore" <newlinesBefore>`: 0,
@@ -96,7 +96,7 @@ General Settings
         Regular expression to match desired part in the target file.
         If the phrase is non-empty and not found in the file but the file exists, the anchor will :std:term:`fail<ignoreOnFail>`.
         If the file does not exist and needle is empty, the file will be created.
-        The exact position to hook the new content is set by the :std:term:`hook<hook>`-settings.
+        The exact position to hook the new content is set by the :ref:`hook<anchors.hook>`-settings.
 
         **Note**: Certain characters (like back-slashes) need to be escaped by an additional backslash (e.g. ``\\``).
 
@@ -112,7 +112,7 @@ General Settings
         Regex does not support nested structures like matching brackets.
         Nevertheless, it is possible to find the position of a matching bracket/paranthesis with this property.
         This property takes an associated list of variable names and subpatterns.
-        Each variable name stores the matched character for futher use and the subpattern from the :std:term:`regex<regex>` (e.g. ``$1``).
+        Each variable name stores the matched character for futher use and the subpattern from the :std:term:`regex` (e.g. ``$1``).
 
         **Note**: The subpattern must entail only **one** character, which is either one of these: ``{``, ``(`` or ``[``.
 
@@ -133,23 +133,61 @@ General Settings
 
         Stored variables are the only variables that can be used as :std:term:`global dependencies<globalDependencies>`.
 
-    hook
-        tbd
+        **Note**: These global variables only store the contents of a pattern, not their position properties, as they cannot be carried accross anchors (files).
+
+.. _anchors.hook:
+
+Hook
+----
+
+The hook block is defining the points at which new content will be inserted relative to the matched regex patterns.
+The target file may be hooked at one precise position.
+The hook may also span multiple characters (as determinded by :std:term:`hook.length`).
+Thus, new content can not only be added in the around a match, but the match itself can also be modified (see :std:term:`hook.replace`).
+
+If an anchor does not define a hook, it is a :ref:`conditional anchor<conditionalAnchor>`.
+
+.. glossary::
 
     hook.start
-        tbd
+        (Start) position of the hook.
+        This may be one of the following.
+
+            - **regex subpattern** (e.g. ``$1`` for first subpattern or ``$0`` for entire match), which will take the starting position of the subpattern
+            - **local variable** (as stored by :std:term:`matchBracket`), which will take the starting position of the contents
+            - **absolute position** (this is not a line number, but a total charachter count), which is rare and is not recommended
+
+        **Note**: Global variables (as defined in :std:term`storeVars`) **cannot** be used as they do not have position properties.
 
     hook.length
-        tbd
+        This specifies the length of the hook.
+        The same values are accepted as for :std:term:`hook.start`, with the difference of retrieving the length of subpattern or variable instead of the start.
+        The length of the hook does not influence the insertion of new contents directly.
+        Where the new content is added is decided primarily by :std:term:`hook.before`.
 
     hook.before
-        tbd
+        This property is a boolean.
+        If set to ``true``, the new contents will be inserted before the hook.
+        This means on :std:term:`hook.start`, pushing everything to the left.
+
+        If set to ``false``, the new contexts will be inserted after the hook.
+        This means on :std:term:`hook.start` + :std:term:`hook.length` + 1.
 
     hook.replace
-        tbd
+        This associative property of haystack-needle pairs can be used to replace subpatterns of the regex.
+        The haystack is regex subpattern (e.g. ``$1``), the needle is a string.
+        The neeedle may entail :ref:`constrained repeat instructions<constainedRepeatInstructions>`.
 
-    insert
-        tbd
+        **Note**: The subpattern (e.g. ``$1``) **must lie inside** the hook, meaning between :std:term:`hook.start` and :std:term:`hook.start` + :std:term:`hook.length`.
+
+.. _anchors.insert:
+
+Insert
+------
+
+tbd
+
+.. glossary::
 
     insert.string
         tbd
@@ -157,20 +195,29 @@ General Settings
     insert.replace
         tbd
 
-    stripTrailingNL
+    insert.stripTrailingNL
         tbd
 
-    indent
+    insert.indent
         tbd
 
-    indent.string
+    insert.indent.string
         tbd
 
-    indent.exclFirstLine
+    insert.indent.exclFirstLine
         tbd
 
-    indent.exclHeader
+    insert.indent.exclHeader
         tbd
+
+.. _anchors.miscellaneous:
+
+Miscellaneous
+-------------
+
+Miscellaneous properties
+
+.. glossary::
 
     newlinesBefore
         tbd
@@ -210,6 +257,15 @@ General Settings
 
     deleteFiles.replace
         tbd
+
+.. _anchors.environment:
+
+Environment
+-----------
+
+Environment properties
+
+.. glossary::
 
     globalDependencies
         tbd
