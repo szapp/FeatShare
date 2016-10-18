@@ -14,7 +14,7 @@ Anchors
     anchors/conditional
 
 Anchors decide which features are integrated into which target files.
-Many features may rely on the same anchors.
+Many features may rely on the same anchors, anchors may be shared accross different projects.
 
 This is an example anchor with a complete list of settings.
 See :ref:`examples <examples>` to find out what this anchors does.
@@ -27,13 +27,13 @@ See :ref:`examples <examples>` to find out what this anchors does.
     |     :std:term:`"description" <description>`: "Anchor description",
     |     :std:term:`"path" <path>`: "path\\to\\file_to_modify",
     |     :std:term:`"regex" <regex>`: {
-    |         :std:term:`"needle" <needle>`: "const.+int.+CUT_OFF.*=[^\\d]*(\\d+).*$",
-    |         :std:term:`"flags" <flags>`: {
-    |             :std:term:`caseSensitive" <caseSensitive>`: false,
-    |             :std:term:`"dotInclNL" <dotInclNL>`: false,
-    |             :std:term:`"multiLine" <multiLine>`: true,
-    |             :std:term:`"ungreedy" <ungreedy>`: false,
-    |             :std:term:`"occurrence" <occurrence>`: 1
+    |         :std:term:`"needle" <regex.needle>`: "const.+int.+CUT_OFF.*=[^\\d]*(\\d+).*$",
+    |         :std:term:`"flags" <regex.flags>`: {
+    |             :std:term:`caseSensitive" <regex.flags.caseSensitive>`: false,
+    |             :std:term:`"dotInclNL" <regex.flags.dotInclNL>`: false,
+    |             :std:term:`"multiLine" <regex.flags.multiLine>`: true,
+    |             :std:term:`"ungreedy" <regex.flags.ungreedy>`: false,
+    |             :std:term:`"occurrence" <regex.flags.occurrence>`: 1
     |         }
     |     },
     |     :std:term:`"matchBracket" <matchBracket>`: {},
@@ -97,7 +97,7 @@ General Settings
         :std:term:`fail<ignoreOnFail>`.
 
     regex
-    needle
+    regex.needle
         Regular expression to match desired part in the target file.
         If the phrase is non-empty and not found in the file but the file exists, the anchor will
         :std:term:`fail<ignoreOnFail>`.
@@ -106,12 +106,12 @@ General Settings
 
         **Note**: Certain characters (like back-slashes) need to be escaped by an additional backslash (e.g. ``\\``).
 
-    flags
-    caseSensitive
-    dotInclNL
-    multiLine
-    ungreedy
-    occurrence
+    regex.flags
+    regex.flags.caseSensitive
+    regex.flags.dotInclNL
+    regex.flags.multiLine
+    regex.flags.ungreedy
+    regex.flags.occurrence
         See :ref:`Regex flags <regexflags>`
 
     matchBracket
