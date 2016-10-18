@@ -157,7 +157,7 @@ Hook
 The hook block is defining the points at which new content will be inserted relative to the matched regex patterns.
 The target file may be hooked at one precise position.
 The hook may also span multiple characters (as determinded by :std:term:`hook.length`).
-Thus, new content can not only be added in the around a match, but the match itself can also be modified (see
+Thus, new content can not only be added the around a match, but the match itself can also be modified (see
 :std:term:`hook.replace`).
 
 If an anchor does not define a hook, it is a :ref:`conditional anchor<conditionalAnchor>`.
