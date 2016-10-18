@@ -5,11 +5,6 @@
 Features
 ========
 
-.. toctree::
-    :hidden:
-
-    features/index
-
 FeatShare is about integrating certain changes into a target environment.
 These changes may be split up into different features.
 There is one file per feature, which allows the end-user to select them before integration.
