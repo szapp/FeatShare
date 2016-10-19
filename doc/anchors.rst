@@ -16,18 +16,18 @@ Anchors
 Anchors decide which features are integrated into which target files.
 Many features may rely on the same anchors, anchors may be shared accross different projects.
 
+There are also special anchors, that are called :ref:`conditional anchors <conditionalAnchor>`.
+
 This is an example anchor with a complete list of settings.
-See :ref:`examples <examples>` to find out what this anchors does.
+See :ref:`examples <examples>` to find out what this anchor does.
 
 .. container:: coderef
 
-
-
     | {
     |     :std:term:`"description" <description>`: "Anchor description",
-    |     :std:term:`"path" <path>`: "path\\to\\file_to_modify",
+    |     :std:term:`"path" <path>`: "path\\\\to\\\\file_to_modify",
     |     :std:term:`"regex" <regex>`: {
-    |         :std:term:`"needle" <regex.needle>`: "const.+int.+CUT_OFF.*=[^\\d]*(\\d+).*$",
+    |         :std:term:`"needle" <regex.needle>`: "const.+int.+CUT_OFF.*=[^\\\\d]*(\\\\d+).*$",
     |         :std:term:`"flags" <regex.flags>`: {
     |             :std:term:`caseSensitive" <regex.flags.caseSensitive>`: false,
     |             :std:term:`"dotInclNL" <regex.flags.dotInclNL>`: false,
@@ -95,6 +95,9 @@ General Settings
     path
         Relative path of the file the anchor will modify. If the file does not exist, the anchor will
         :std:term:`fail<ignoreOnFail>`.
+
+        .. note::
+            **Note:** Back-slashes need to be escaped by an additional backslash (``\\``).
 
     regex
     regex.needle
