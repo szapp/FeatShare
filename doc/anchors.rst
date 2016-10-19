@@ -8,10 +8,10 @@ Anchors
 .. toctree::
     :hidden:
 
-    anchors/index
     anchors/regex
     anchors/hooks
     anchors/conditional
+    anchors/repeatInstructions
 
 Anchors decide which features are integrated into which target files.
 Many features may rely on the same anchors, anchors may be shared accross different projects.
@@ -98,7 +98,7 @@ General Settings
 
     regex
     regex.needle
-        Regular expression to match desired part in the target file.
+        :ref:`Regular expression <regex>` to match desired part in the target file.
         If the phrase is non-empty and not found in the file but the file exists, the anchor will
         :std:term:`fail<ignoreOnFail>`.
         If the file does not exist and needle is empty, the file will be created.
@@ -115,9 +115,9 @@ General Settings
         See :ref:`Regex flags <regexflags>`
 
     matchBracket
-        Regex does not support nested structures like matching brackets.
+        :ref:`Regex <regex>` does not support nested structures like matching brackets.
         Nevertheless, it is possible to find the position of a matching bracket/paranthesis with this property.
-        This property takes an associated list of variable names and subpatterns.
+        This property takes an associated list of variable names and :ref:`subpatterns <subpatterns>`.
         Each variable name stores the matched character for futher use and the subpattern from the :std:term:`regex`
         (e.g. ``$1``).
 
@@ -135,8 +135,8 @@ General Settings
             | }
 
     storeVars
-        Like in :std:term:`matchBracket<matchBracket>` this associative list of variable-subpattern pairs can store
-        parts of the matched regex phrase into variables.
+        Like in :std:term:`matchBracket<matchBracket>` this associative list of variable-:ref:`subpattern <subpatterns>`
+        pairs can store parts of the matched regex phrase into variables.
         The stored subpatterns will, unlike any of the other available storing mechanisms, be preserved across anchors.
         Any of these global variables can then be referenced in **future** anchors.
         Anchors defined (and thus processed) before the anchors in which the variables are set will not find them.
@@ -168,8 +168,8 @@ If an anchor does not define a hook, it is a :ref:`conditional anchor<conditiona
         (Start) position of the hook.
         This may be one of the following.
 
-            - **regex subpattern** (e.g. ``$1`` for first subpattern or ``$0`` for entire match), which will take the
-              starting position of the subpattern
+            - **regex subpattern** (e.g. ``$1`` for first :ref:`subpattern <subpatterns>` or ``$0`` for entire match),
+              which will take the starting position of the subpattern
             - **local variable** (as stored by :std:term:`matchBracket`), which will take the starting position of the
               contents
             - **absolute position** (this is not a line number, but a total charachter count), which is rare and is not
@@ -181,7 +181,7 @@ If an anchor does not define a hook, it is a :ref:`conditional anchor<conditiona
     hook.length
         This specifies the length of the hook.
         The same values are accepted as for :std:term:`hook.start`, with the difference of retrieving the length of
-        subpattern or variable instead of the start.
+        :ref:`subpattern <subpatterns>` or variable instead of the start.
         The length of the hook does not influence the insertion of new contents directly.
         Where the new content is added is decided primarily by :std:term:`hook.before`.
 
@@ -194,9 +194,10 @@ If an anchor does not define a hook, it is a :ref:`conditional anchor<conditiona
         This means on :std:term:`hook.start` + :std:term:`hook.length` + 1.
 
     hook.replace
-        This associative property of needle-replace pairs can be used to replace subpatterns of the regex.
+        This associative property of needle-replace pairs can be used to replace :ref:`subpatterns <subpatterns>`
+        of the regex.
         The needle is a regex subpattern (e.g. ``$1``), the replace phrase is a string.
-        The replace phrase may entail :ref:`constrained repeat instructions<constainedRepeatInstructions>`.
+        The replace phrase may entail :ref:`constrained repeat-instructions<constrainedRepeatInstructions>`.
         Parts of the replace phrase may also be enclosed by curly brackets ``{ }`` to constitute replace keywords to be
         subject to :ref:`final replaces<anchors.finalReplace>`.
 
@@ -217,7 +218,7 @@ is defined in this part.
     insert.string
         This phrase will be inserted at the specified :ref:`hook<anchors.hook>`.
         Aside from literal characters it may be made up of replace keywords (see :std:term:`insert.replace`) or
-        :ref:`repeat instructions<repeatInstructions>`.
+        :ref:`repeat-instructions <repeatInstructions>`.
         The contents passed to the anchor by the :ref:`features <features>` can be inserted by specifying a replace
         keyword, which can then be referred to by :std:term:`insert.replace` to incorporate the contents from the
         :ref:`features <features>`.
@@ -233,7 +234,7 @@ is defined in this part.
 
             - Global variable (see :std:term:`storeVars`)
             - Feature (see :ref:`features <features>`)
-            - Repeat instructions (see :ref:`repeatInstructions`)
+            - Repeat-instructions (see :ref:`repeatInstructions <repeatInstructions>`)
             - Literal text
 
         If the needle is a global variable, it will first be interpreted before searching the :std:term:`insert.string`.
@@ -378,8 +379,9 @@ See :ref:`conditional anchors<conditionalAnchor>`.
     deleteFiles.replace
         This is an associative list of needle-replace pairs.
         The needles are replace keywords without curly brackets ``{ }``.
-        The replace phrases may either literal (which would not make any sense in this context) or
-        :std:term:`global variables <storeVars>`.
+        The replace phrases may be made up of literal characters (which would not make any sense in this context),
+        :std:term:`global variables <storeVars>` and
+        :ref:`constrained repeat-instructions<constrainedRepeatInstructions>`.
 
         **Note**: Because of the nature of processing order regarding :ref:`conditional anchors<conditionalAnchor>`,
         the :std:term:`global variables <storeVars>` of an anchor are set **after** the deleteFiles instruction is
