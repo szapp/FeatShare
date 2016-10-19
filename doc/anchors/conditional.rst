@@ -90,13 +90,13 @@ If feature XY already exists, the log will look like this
 
 .. code-block:: none
 
-    1970-01-01 00:00:00 -- WARNING -- Feature XY already exists.
+    1970-01-01 00:00:00 :: WARNING  :: Anchor #2(file_to_modify): RegEx not matched: [i] 'some content after which to integrate the feature' - Feature XY already exists.
 
 If feature XY does not already exist, the log will look like this
 
 .. code-block:: none
 
-    1970-01-01 00:00:00 -- WARNING -- Feature XY not found. Will integrate it now.
+    1970-01-01 00:00:00 :: WARNING  :: Anchor #1(file_to_modify): RegEx not matched: [i] 'some line that only exists if the feature is present' - Feature XY not found. Will integrate it now.
 
 Since a :std:term:`ignoreOnFail` message is set, the integration will not fail (stop due to an error) in either case,
 but merely display the warnings seen above.
