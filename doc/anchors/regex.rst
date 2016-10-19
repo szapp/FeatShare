@@ -28,8 +28,9 @@ A case-insensitive regex search for ``^\s*var\s+int\s+variable\s*;.*$`` will suc
 
 How regular expressions work and what different symbols mean is not covered in this documentation.
 
-**Note:** Regex implementations vary. To help with finding an appropriate regex that matches in FeatShare use the
-:ref:`Felper <felper>`.
+.. note::
+    **Note:** Regex implementations vary. To help with finding an appropriate regex that matches in FeatShare use the
+    :ref:`Felper <felper>`.
 
 .. _subpatterns:
 
@@ -51,7 +52,8 @@ match.
 This allows the use subpatterns interchangeably for indices (e.g. :std:term:`hook.start` and :std:term:`hook.length`),
 as well as for their content (e.g. :std:term:`hook.replace` and :std:term:`storeVars`).
 
-**Note**: The :ref:`Felper <felper>` may help in determining the order of subpatterns in nested cases.
+.. note::
+    **Note**: The :ref:`Felper <felper>` may help in determining the order of subpatterns in nested cases.
 
 .. _regexflags:
 
@@ -63,8 +65,9 @@ Regex utilizes flags to set extra options. A **limited** number of these options
 For example: FeatShare has no need to match more than one occurrence. That is why the ``global`` flag is neither turned
 on nor accessible in the regex flags.
 
-**Note:** Regex implementations vary. To help with finding an appropriate regex that matches in FeatShare use the
-:ref:`Felper <felper>`.
+.. note::
+    **Note:** Regex implementations vary. To help with finding an appropriate regex that matches in FeatShare use the
+    :ref:`Felper <felper>`.
 
 .. glossary::
 

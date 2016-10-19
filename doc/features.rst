@@ -71,9 +71,10 @@ In the next sections there will be a few special traits.
 
 See alsoe :ref:`anchor patterns <features.anchorPattern>`.
 
-**Note**: Outside of this section, traits may also be more commonly referred to as anchors.
-However, anchors ≠ traits.
-Since most traits are tied to only one anchors, it is more convenient to call them anchors.
+.. note::
+    **Note**: Outside of this section, traits may also be more commonly referred to as anchors.
+    However, anchors ≠ traits.
+    Since most traits are tied to only one anchors, it is more convenient to call them anchors.
 
 Info Text Anchor
 ----------------
@@ -118,8 +119,9 @@ The default name is ``copyFiles`` with the following syntax.
 Here, the first part is the relative path from the integration setup, while the second part is the destination: a
 relative path in the target environment.
 
-**Note**: For security reasons it is not allowed to copy directories.
-All files need to be referenced individually.
+.. note::
+    **Note**: For security reasons it is not allowed to copy directories.
+    All files need to be referenced individually.
 
 File Delete Anchor
 ------------------
@@ -147,5 +149,6 @@ The default name is ``deleteFiles`` with the following syntax.
 
 Here, the each line is a file to delete represented by a relative path in the target environment.
 
-**Note**: For security reasons it is not allowed to delete directories.
-All files need to be referenced individually.
+.. note::
+    **Note**: For security reasons it is not allowed to delete directories.
+    All files need to be referenced individually.

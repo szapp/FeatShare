@@ -105,7 +105,8 @@ General Settings
         This is the default directory which will be pre-selected by default and is visible in the setup window below the
         :std:term:`installInstruction`. The end-user can then select their preferred directory.
 
-        **Note:** Back-slashes need to be escaped by an additional backslash (``\\``).
+        .. note::
+            **Note:** Back-slashes need to be escaped by an additional backslash (``\\``).
 
 .. _config.log:
 
@@ -126,7 +127,9 @@ A log file will be created to to show more details on all operations performed, 
         If this setting is ``true`` the log is written in real-time. Every event is then written to the log file as it
         happens, instead of at the end of the setup (``false``).
 
-        **Note:** This setting is overwritten to ``false`` if :std:term:`dryRun` or :std:term:`diffGUI` are ``true``.
+        .. note::
+            **Note:** This setting is overwritten to ``false`` if :std:term:`dryRun` or :std:term:`diffGUI` are
+            ``true``.
 
     log.timeformat
         Each line in the log file is preceded by a time stamp to identify the time at which an event occurred. The time
@@ -198,7 +201,8 @@ changes in `diff utility style <https://en.wikipedia.org/wiki/Diff_utility>`_. T
 (see :std:term:`dryRun`) or to give the end-user more insight before they accept the changes (see :std:term:`diffGUI`).
 The diff may be customized to have different color schemes, see :std:term:`diffGUIstyle`.
 
-**Note:** The diff utility shows differences line-wise, not character-wise.
+.. note::
+    **Note:** The diff utility shows differences line-wise, not character-wise.
 
 .. glossary::
 
@@ -214,18 +218,22 @@ The diff may be customized to have different color schemes, see :std:term:`diffG
         The setting should be set to ``false`` when shipping the setup, otherwise the
         end-user won't be able to install the setup.
 
-        **Note:** This setting will overwrite :std:term:`diffGUI` to ``true``.
+        .. note::
+            **Note:** This setting will overwrite :std:term:`diffGUI` to ``true``.
 
-        **Note:** This setting will overwrite :std:term:`log.instantFlush` to ``false``.
+        .. note::
+            **Note:** This setting will overwrite :std:term:`log.instantFlush` to ``false``.
 
     diffGUI
         This setting is identical to :std:term:`dryRun` with the difference, that the full installation is not disabled.
         This can be usefull, to give the end-user more insight into what changes will be performed. They can then accept
         the changes or abort the setup without applying any changes. (Of course no "DIFF RUN" mark will be visible.)
 
-        **Note:** This setting is overwritten to ``true`` if :std:term:`dryRun` is ``true``.
+        .. note::
+            **Note:** This setting is overwritten to ``true`` if :std:term:`dryRun` is ``true``.
 
-        **Note:** This setting will overwrite :std:term:`log.instantFlush` to ``false``.
+        .. note::
+            **Note:** This setting will overwrite :std:term:`log.instantFlush` to ``false``.
 
     diffGUIstyle
         The syntax highlighting of the diff is kept in coloring schemes. This setting references the name of the scheme.
@@ -353,7 +361,8 @@ Here the feature specifics are set.
         This is the regex file pattern for all feature files. If the feature files end on .feat this setting should be
         ``"^.*\\.feat$"``.
 
-        **Note:** Back-slashes need to be escaped by an additional backslash (``\\``).
+        .. note::
+            **Note:** Back-slashes need to be escaped by an additional backslash (``\\``).
 
     features.infoTextAnchor
         Feature files contain key-value pairs, where the key is an anchor-name and the value is the text to insert, see
@@ -380,8 +389,9 @@ This set of options changes the key-value syntax in feature files. The default s
 Where the value (text to insert at anchor) is wrapped by its key (anchor name) and the next. The keys (anchor names) are
 indicated by three pound signs.
 
-**Note:** There is typically no need to ever change the anchor pattern. If everything works, do not touch these
-settings.
+.. note::
+    **Note:** There is typically no need to ever change the anchor pattern. If everything works, do not touch these
+    settings.
 
 .. glossary::
 
@@ -390,7 +400,8 @@ settings.
         Key and value need to be matched in subpatterns, which will be assigned in
         :std:term:`features.anchorPattern.key` and :std:term:`features.anchorPattern.value`.
 
-        **Note:** Back-slashes need to be escaped by an additional backslash (``\\``).
+        .. note::
+            **Note:** Back-slashes need to be escaped by an additional backslash (``\\``).
 
     features.anchorPattern.flags
     features.anchorPattern.flags.caseSensitive
@@ -416,8 +427,9 @@ Feature files contain key-value pairs, where the key is an anchor-name and the v
 :ref:`anchor patterns <features.anchorPattern>`. The ``fileCopyAnchor`` is an exception. It defines what files should be
 copied from the setup to the target directory (including a target sub-directory path).
 
-**Note:** There is typically no need to ever change the file copy pattern. If everything works, do not touch these
-settings.
+.. note::
+    **Note:** There is typically no need to ever change the file copy pattern. If everything works, do not touch these
+    settings.
 
 .. glossary::
 
@@ -429,7 +441,8 @@ settings.
         captured. "FromPath" and "toPath" need to be matched in subpatterns, which will be assigned in
         :std:term:`features.fileCopyAnchor.fromPath` and :std:term:`features.fileCopyAnchor.toPath`.
 
-        **Note:** Back-slashes need to be escaped by an additional backslash (``\\``).
+        .. note::
+            **Note:** Back-slashes need to be escaped by an additional backslash (``\\``).
 
     features.fileCopyAnchor.flags
     features.fileCopyAnchor.flags.caseSensitive
@@ -455,8 +468,9 @@ Feature files contain key-value pairs, where the key is an anchor-name and the v
 :ref:`anchor patterns <features.anchorPattern>`. The ``fileDeleteAnchor`` is an exception. It defines what files should
 be deleted from the target directory.
 
-**Note:** There is typically no need to ever change the file delete pattern. If everything works, do not touch these
-settings.
+.. note::
+    **Note:** There is typically no need to ever change the file delete pattern. If everything works, do not touch these
+    settings.
 
 .. glossary::
 
@@ -467,7 +481,8 @@ settings.
         This setting defines by regex how the file paths of the files to delete are captured. The subpattern containing
         the file path will be assigned in :std:term:`features.fileDeleteAnchor.filePath`.
 
-        **Note:** Back-slashes need to be escaped by an additional backslash (``\\``).
+        .. note::
+            **Note:** Back-slashes need to be escaped by an additional backslash (``\\``).
 
     features.fileDeleteAnchor.flags
     features.fileDeleteAnchor.flags.caseSensitive
@@ -511,4 +526,5 @@ If the anchors are stored in dedicated files, this setting is an associative lis
 
 Where ``path`` is a file path to where to find anchor files of this ``filePattern``. The ``filePattern`` is regex.
 
-**Note:** Back-slashes need to be escaped by an additional backslash (``\\``).
+.. note::
+    **Note:** Back-slashes need to be escaped by an additional backslash (``\\``).

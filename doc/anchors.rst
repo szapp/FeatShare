@@ -104,7 +104,9 @@ General Settings
         If the file does not exist and needle is empty, the file will be created.
         The exact position to hook the new content is set by the :ref:`hook<anchors.hook>`-settings.
 
-        **Note**: Certain characters (like back-slashes) need to be escaped by an additional backslash (e.g. ``\\``).
+        .. note::
+            **Note**: Certain characters (like back-slashes) need to be escaped by an additional backslash
+            (e.g. ``\\``).
 
     regex.flags
     regex.flags.caseSensitive
@@ -121,8 +123,9 @@ General Settings
         Each variable name stores the matched character for futher use and the subpattern from the :std:term:`regex`
         (e.g. ``$1``).
 
-        **Note**: The subpattern must entail only **one** character, which is either one of these: ``{``, ``(`` or
-        ``[``.
+        .. note::
+            **Note**: The subpattern must entail only **one** character, which is either one of these: ``{``, ``(`` or
+            ``[``.
 
         The example code below will store the matched character of the open paranthesis which is assumed to be in
         subpattern ``$2`` into ``parenthesis`` and the curly bracket in subpattern ``$1`` into ``curlyBracket``.
@@ -143,11 +146,13 @@ General Settings
 
         Stored variables are the only variables that can be used as :std:term:`global dependencies<globalDependencies>`.
 
-        **Note**: These global variables only store the contents of a pattern, not their position properties, as they
-        cannot be carried accross anchors (files).
+        .. note::
+            **Note**: These global variables only store the contents of a pattern, not their position properties, as
+            they cannot be carried accross anchors (files).
 
-        **Note**: If an anchor fails all global variables associated with this anchor will be deleted, regardless of
-        whether those variables had been already defined by previous anchors.
+        .. note::
+            **Note**: If an anchor fails all global variables associated with this anchor will be deleted, regardless of
+            whether those variables had been already defined by previous anchors.
 
 .. _anchors.hook:
 
@@ -175,8 +180,9 @@ If an anchor does not define a hook, it is a :ref:`conditional anchor<conditiona
             - **absolute position** (this is not a line number, but a total charachter count), which is rare and is not
               recommended
 
-        **Note**: Global variables (as defined in :std:term`storeVars`) **cannot** be used as they do not have position
-        properties.
+        .. note::
+            **Note**: Global variables (as defined in :std:term`storeVars`) **cannot** be used as they do not have
+            position properties.
 
     hook.length
         This specifies the length of the hook.
@@ -201,8 +207,9 @@ If an anchor does not define a hook, it is a :ref:`conditional anchor<conditiona
         Parts of the replace phrase may also be enclosed by curly brackets ``{ }`` to constitute replace keywords to be
         subject to :ref:`final replaces<anchors.finalReplace>`.
 
-        **Note**: The subpattern (e.g. ``$1``) **must lie inside** the hook, meaning between :std:term:`hook.start` and
-        :std:term:`hook.start` + :std:term:`hook.length`.
+        .. note::
+            **Note**: The subpattern (e.g. ``$1``) **must lie inside** the hook, meaning between :std:term:`hook.start`
+            and :std:term:`hook.start` + :std:term:`hook.length`.
 
 .. _anchors.insert:
 
@@ -276,18 +283,21 @@ The environment around the new content can be altered with these properties.
     localHeader
         A phrase to use as :std:term:`header <setHeader>` instead of the :std:term:`global header <globalHeader>`.
 
-        **Note**: Do not forget to add comment flags (e.g. ``//``) before the header and a trailing new line if
-        applicable.
+        .. note::
+            **Note**: Do not forget to add comment flags (e.g. ``//``) before the header and a trailing new line if
+            applicable.
 
-        **Note**: If set to ``""``, the :std:term:`global header <globalHeader>` will be used.
+        .. note::
+            **Note**: If set to ``""``, the :std:term:`global header <globalHeader>` will be used.
 
 
     setHeader
         If ``true``, a header will be inserted before the new content.
         This may either be the :std:term:`global header <globalHeader>` or a :std:term:`local header <localHeader>`.
 
-        **Note**: If :std:term:`hook.before` is ``false``, the header will be inserted between hooked phrase and the new
-        content.
+        .. note::
+            **Note**: If :std:term:`hook.before` is ``false``, the header will be inserted between hooked phrase and the
+            new content.
 
 .. _anchors.finalReplace:
 
@@ -302,7 +312,8 @@ This is where the finalReplace properties come in.
 There may be several needle-replace pairs.
 Each is listed in their own associative list, making up a non-associative list of final replace instructions.
 
-**Note**: The final replace instructions will be processed in the order they are defined.
+.. note::
+    **Note**: The final replace instructions will be processed in the order they are defined.
 
 .. glossary::
 
@@ -316,11 +327,13 @@ Each is listed in their own associative list, making up a non-associative list o
     finalReplace.incr
         If the replace phrase is a numeric value, it will be incremented by this amount after every insertion.
 
-        **Note**: The value will **not** be incremented after every replacement, but after every block.
-        A block being either a feature or the hook phrase (if :std:term:`hook.length` > 0).
-        This means if the :std:term:`insert.string` is referencing the finalReplace.needle twice, both will have the
-        same value.
-        Only after proceeding to the next insertion block, it will increase.
+        .. note::
+            **Note**: The value will **not** be incremented after every replacement, but after every block.
+            A block being either a feature or the hook phrase (if :std:term:`hook.length` > 0).
+            This means if the :std:term:`insert.string` is referencing the finalReplace.needle twice, both will have the
+            same value.
+            Only after proceeding to the next insertion block, it will increase.
+
         See this short example:
 
         .. container:: coderef
@@ -383,10 +396,11 @@ See :ref:`conditional anchors<conditionalAnchor>`.
         :std:term:`global variables <storeVars>` and
         :ref:`constrained repeat-instructions<constrainedRepeatInstructions>`.
 
-        **Note**: Because of the nature of processing order regarding :ref:`conditional anchors<conditionalAnchor>`,
-        the :std:term:`global variables <storeVars>` of an anchor are set **after** the deleteFiles instruction is
-        processed.
-        Thus, they cannot be used here.
+        .. note::
+            **Note**: Because of the nature of processing order regarding :ref:`conditional anchors<conditionalAnchor>`,
+            the :std:term:`global variables <storeVars>` of an anchor are set **after** the deleteFiles instruction is
+            processed.
+            Thus, they cannot be used here.
 
 .. _anchors.conditions:
 
@@ -411,9 +425,10 @@ See :ref:`conditional anchors<conditionalAnchor>` for more details.
         If, however, the variable should not exist (or was set to zero), than prefix the name of the variable with an
         exclamation mark (e.g. ``!variablename``).
 
-        **Note**: Unlike :std:term:`feature dependencies <dependencies>`, these global dependencies will cause the
-        anchor to fail, if their conditions not met.
-        See :std:term:`ignoreOnFail` for more information.
+        .. note::
+            **Note**: Unlike :std:term:`feature dependencies <dependencies>`, these global dependencies will cause the
+            anchor to fail, if their conditions not met.
+            See :std:term:`ignoreOnFail` for more information.
 
     dependencies
         This is a non-associative list holding feature requirements.
@@ -443,5 +458,6 @@ See :ref:`conditional anchors<conditionalAnchor>` for more details.
         an unmet :std:term:`global dependency <globalDependencies>`.
         See :ref:`conditional anchors<conditionalAnchor>` for more details.
 
-        **Note**: If an anchor fails all :std:term:`global variables <storeVars>` associated with this anchor will be
-        deleted, regardless of whether those variables had been already defined by previous anchors.
+        .. note::
+            **Note**: If an anchor fails all :std:term:`global variables <storeVars>` associated with this anchor will
+            be deleted, regardless of whether those variables had been already defined by previous anchors.
