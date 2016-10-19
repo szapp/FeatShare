@@ -26,14 +26,13 @@ Usage
 
 Assume there is a feature (call it XY) which should be integrated only if it does not exist.
 For this, create an anchor which searches for a line that a file would only have, if XY was present.
-This anchor will store 'found' (or anything else besides zero) in a :std:term:`global variable <storeVars>` named
-``XYExists``.
+This anchor will store 'found' (or anything else) in a :std:term:`global variable <storeVars>` named ``XYExists``.
 Additionally, this anchor should set an :std:term:`ignoreOnFail` message like 'Feature XY not found'.
 This anchor will have no :ref:`hook <anchors.hook>` or :ref:`insert <anchors.insert>` properties.
 Now, the variable ``XYExists`` will only be written (and exist), if the anchor succeeds.
 If the anchor fails, meaning it did not find the line in the file, the variable ``XYExists`` will not exist.
 If there is a second anchor now that will have ``!XYExists`` as a :std:term:`global dependency <globalDependencies>`
-(note the exclamation mark), it will only be called if the variable ``XYExists`` does not exist (or is equal to zero).
+(note the exclamation mark), it will only be called if the variable ``XYExists`` does not exist.
 In this anchor, the integration of the feature can be implemented.
 Additionally, this anchor should set an :std:term:`ignoreOnFail` message like 'Feature XY already exists'.
 

@@ -95,7 +95,7 @@ General Settings
     globalHeader
         This will function as the default heading on top of each inserted block. Keep in mind to include a comment flag
         here (**if** the header should be a comment), like ``//``. This is a **global** header as the name indicates.
-        Each anchor may have its own ("local") header. This setting can be left blank (``""``).
+        Each anchor may have its own :std:term:`("local") header <localHeader>`. This setting can be left blank (``""``).
 
     installInstruction
         This description will be shown in the setup window above the :std:term:`target directory <defaultPath>`

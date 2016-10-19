@@ -423,10 +423,11 @@ See :ref:`conditional anchors<conditionalAnchor>` for more details.
 
         Set or not set.
 
-        If an anchor should be processed only if a global variable exists (was set to a value other than zero at
-        some previous point), specify the name of the variable (e.g. ``variablename``).
-        If, however, the variable should not exist (or was set to zero), than prefix the name of the variable with an
-        exclamation mark (e.g. ``!variablename``).
+        If an anchor should be processed only if a global variable exists (was set at some previous point), specify the
+        name of the variable (e.g. ``variablename``).
+        If, however, the variable should not exist, than prefix the name of the variable with an exclamation mark (e.g.
+        ``!variablename``).
+        The Prefix ``!`` is a logical not.
 
         .. note::
             **Note**: Unlike :std:term:`feature dependencies <dependencies>`, these global dependencies will cause the
