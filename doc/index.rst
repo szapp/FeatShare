@@ -74,7 +74,6 @@ The following third-party software is used (without adding any modifications).
         :includehidden:
 
         tutorial
-        faq
         config
         felper
         examples
