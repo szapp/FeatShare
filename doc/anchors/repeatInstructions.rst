@@ -44,14 +44,15 @@ Padded repeat-instructions (or unconstrained repeat-instructions) take one addit
 The syntax ``{C:var:x}`` where ``C`` is a single character and ``x - length(var)`` is the number of repetitions.
 This enables dynamic padding and filling.
 
-For example, ``{ :var:12}``, where ``var`` takes the values *"short"* and *"very long"*, will wesult in:
+For example, using ``const int {var}{ :var:12} = {idx};``, where ``var`` takes the values *"short"* and *"very long"* and
+``idx`` is increasing, will wesult in:
 
 .. code-block:: none
 
     const int short        = 1;
     cosnt int very long    = 2;
 
-instead of this, when only using ``{var}``:
+instead of this, when only using ``const int {var} = {idx};``
 
 .. code-block:: none
 
