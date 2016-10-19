@@ -29,7 +29,7 @@ See :ref:`examples <examples>` to find out what this anchor does.
     |     :std:term:`"regex" <regex>`: {
     |         :std:term:`"needle" <regex.needle>`: "const.+int.+CUT_OFF.*=[^\\\\d]*(\\\\d+).*$",
     |         :std:term:`"flags" <regex.flags>`: {
-    |             :std:term:`caseSensitive" <regex.flags.caseSensitive>`: false,
+    |             :std:term:`"caseSensitive" <regex.flags.caseSensitive>`: false,
     |             :std:term:`"dotInclNL" <regex.flags.dotInclNL>`: false,
     |             :std:term:`"multiLine" <regex.flags.multiLine>`: true,
     |             :std:term:`"ungreedy" <regex.flags.ungreedy>`: false,
