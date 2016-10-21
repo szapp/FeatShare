@@ -9,9 +9,12 @@ At the start of each setup are of course the features which should be integrated
 
 Nevertheless, there is a little more to setup. This is a short outline of what we need to do.
 
-#. :ref:`Create a configuration file <tutorialConfigJson>`
-#. :ref:`Select what to integrate <tutorialFeatures>`
-#. :ref:`Create anchors <tutorialAnchors>`
+#. :ref:`Create a configuration file <tutorial.configJson>`
+#. :ref:`Select what to integrate <tutorial.features>`
+#. :ref:`Create anchors <tutorial.anchors>`
+#. :ref:`Build a setup <tutorial.buildSetup>`
+
+.. _tutorial.premise:
 
 Premise
 -------
@@ -61,7 +64,7 @@ Clearly we need to make as little assumptions on the parts we are searching as p
 :ref:`regular expressions <regex>`.
 
 
-.. _tutorialConfigJson:
+.. _tutorial.configJson:
 
 1. Configuration: config.json
 -----------------------------
@@ -72,6 +75,8 @@ All of those settings are set using a file named :ref:`config.json <configjson>`
 Without this file the setup cannot be build.
 Therefore, the first thing we need to do now is create a file named ``config.json``.
 Let's keep it simple for now and write the following lines to it.
+
+The file is written in `JSON format <http://www.json.org/>`_.
 Mind the commas and the brackets.
 Indentation is not important but helps for readability.
 
@@ -84,7 +89,7 @@ Indentation is not important but helps for readability.
     |     :std:term:`"defaultPath" <defaultPath>`: "C:\\\\Data\\\\MyProject\\\\",
     |     :std:term:`"dryRun" <dryRun>`: true,
     |     :ref:`"features" <config.features>`: {
-    |         :std:term:`"filePattern" <features.filePattern>`: ".*\\.feat"
+    |         :std:term:`"filePattern" <features.filePattern>`: ".*\\\\.feat"
     |     },
     |     :ref:`"anchors" <config.anchors>`: {
     |         "": "^anchors.*\\\\.json$"
@@ -92,10 +97,10 @@ Indentation is not important but helps for readability.
     | }
 
 There is a lot more that can be set here.
-The absolute minimum for a config file is the setting :ref:`"anchors" <config.anchors>`.
+The absolute minimum for a config file is the setting :ref:`anchors <config.anchors>`.
 For detailed descriptions and explanations see :ref:`config.json <configjson>` or click on the references above.
 
-.. _tutorialFeatures:
+.. _tutorial.features:
 
 2. Features
 -----------
@@ -103,22 +108,36 @@ For detailed descriptions and explanations see :ref:`config.json <configjson>` o
 Next we need to decide **what** we want to integrate - the **how** comes later.
 
 The *what* will be stored in a feature file.
-Each feature has its own file. What exactly defines a feature is up to you.
-The name of the feature files are up to you as well as the :std:term:`file extension <features.filePattern>`.
-Here we will stick to the default file extension, since we didn't specify otherwise in the
-:ref:`configuration <tutorialConfigJson>` and name the feature file ``newFeature.feat``.
+Each feature has its own file.
+What exactly defines a feature is up to you.
+Let's add two new constants, for each of which we will create their own feature (file).
+The name of the feature files are also up to you, as well as the :std:term:`file extension <features.filePattern>`.
+Here we will stick to the file extension :ref:`defined above <tutorial.configJson>` and name the feature files
+``newFeature1.feat`` and ``newFeature2.feat``.
 
-The first thing we define in the feature file is the information text.
+The first thing we define in the feature files is the information text.
 This text is the description that will be displayed when selecting the feature in the setup before starting the
 integration.
-Let's assume we want to add two new constants before ``CUT_OFF`` and adjust the indices accordingly::
+Let's assume we want to add two new constants before ``CUT_OFF`` and adjust the indices accordingly.
+
+``newFeature1.feat``::
 
     ### infoText ###
     This feature adds the FREQ_IN constant.
     ### end ###
 
+``newFeature2.feat``::
+
+    ### infoText ###
+    This feature adds the FREQ_OUT constant.
+    ### end ###
+
 The next thing we do is specify what is going to be added.
-So let's add the new one like this::
+Here it is only on addition, but features usually consist of a lot of characteristics, here referred to as
+:ref:`traits <features.traits>`.
+By the nature of how we are gonna add the constants we will only need their names here as trait.
+
+``newFeature1.feat``::
 
     ### infoText ###
     This feature adds the FREQ_IN constant.
@@ -126,33 +145,54 @@ So let's add the new one like this::
     FREQ_IN
     ### end ###
 
-.. _tutorialAnchors:
+``newFeature2.feat``::
 
-3. Anchors
-----------
+    ### infoText ###
+    This feature adds the FREQ_OUT constant.
+    ### newConstant ###
+    FREQ_OUT
+    ### end ###
+
+.. note::
+    **Note**: For more information on features, see :ref:`features <features>`.
+
+.. _tutorial.anchors:
+
+3. Anchor
+---------
 
 Once we know what to insert, we need to make sure it's integrated at the right position - now comes the **how**.
 
 The new constants needs to be added between ``PHASE`` and ``CUT_OFF`` with the value of ``CUT_OFF`` while increasing it
 for ``CUT_OFF``.
 This can be done with only one anchor.
-(More sophisticated changes may need multiple anchors.)
+(More sophisticated changes usually need multiple anchors.)
 
 As seen above ``file1.cpp`` may vary a lot in appearance.
-Since we want to grab a hold of ``CUT_OFF``, we need to create a :ref:`regular expression <regex>` that will match that line.
+Since we want to grab a hold of ``CUT_OFF``, we need to create a :ref:`regular expression <regex>` that will match that
+line.
 
 .. note::
-    **Note**: In general it is always helpful to make use of the :ref:`Felper <felper>` to find a suited regular expression.
+    **Note**: In general it is always helpful to make use of the :ref:`Felper <felper>` to find a suited regular
+    expression.
 
-Here, this regex will match the method signature::
+Here, this regex will match in both cases::
 
     ^\s*const\s+int\s+CUT_OFF\s+=\s*(\d+)\s*;.*$
 
 With the parentheses around ``\d+`` this regex will create the subpattern ``$1`` for the current value of ``CUT_OFF``.
-We will use this to explicitly replace the it.
+We will use this to explicitly replace and increment it.
 
 .. note::
     **Note**: Back-slashes of the regex need to be escaped by an additional backslash (e.g. ``\\``).
+
+Around this regex we write an anchor specification, which will tell FeatShare how to add the features.
+In the :ref:`configuration file above <tutorial.configJson>` we specified, that the anchors would be in a file called
+``anchors.json``.
+The anchors has the same structure as the :ref:`configuration file above <tutorial.configJson>` but has a lot of
+different properties.
+Some of these properties are not listed in this example.
+See for more :ref:`anchors <anchors>` details.
 
 .. container:: coderef
 
@@ -202,9 +242,42 @@ We will use this to explicitly replace the it.
     |     }
     | ]
 
+The ``regex`` block finds where to add/modify content, the ``hook`` block specifies the exact position and modifies the
+regex matched phrase, the ``inset`` block adds the new content and ``storeVars`` saves the current value of ``CUT_OFF``
+to be used in ``finalReplace`` where the values will be applied to the newly added constants.
+
+.. note::
+    **Note**: Each property is a link leading to a more thorough explanation what it does.
+
+.. note::
+    **Note**: For more information on anchors, see :ref:`anchors <anchors>`.
+
+.. _tutorial.buildSetup:
+
+4. Building a Setup
+-------------------
+
+This is all there is to it.
+Now we create a setup from the created files.
+
+.. note::
+    **Note**: For details on how to build a setup from these three types of files (configuration, anchors, features) see
+    :ref:`BuildSetup <buildSetup>`.
 
 Result
 ------
+
+Since we set the option :std:term:`dryRun`, the setup will only perform a test run and not actually make any changes to
+the target environment.
+To "arm" the setup remove the dryRun option in the configuration.
+You may replace it with the :std:term:`diffGUI` option, which will still enable the preview of the changes before
+applying them.
+This is very end-user friendly as they can see what the setup will do and can still decide to back out.
+
+The output of setting either :std:term:`dryRun` or :std:term:`diffGUI` will be a diff utility type text looking like
+this.
+The first part is the output when performing on the well formatted ``file1.cpp`` the second is the output for the
+ill-formatted version of the file (see :ref:`above <tutorial.premise>`).
 
 .. container:: diffdefault
 

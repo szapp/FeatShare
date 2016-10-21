@@ -8,7 +8,7 @@
    * -  .. image:: /_static/images/icon.png
           :alt:
      -  | **FeatShare v0.1-beta**
-        | Copyright |copy| 2016  szapp (http://github.com/szapp)
+        | Copyright |copy| 2016  szapp
         | `http://github.com/szapp/FeatShare <http://github.com/szapp/FeatShare>`_
 
         .. container:: tiny
@@ -75,11 +75,11 @@ The following third-party software is used (without adding any modifications).
 
         tutorial
         config
-        felper
-        examples
-        reference
-        license
         anchors
         features
+        felper
+        examples
+        license
+        reference
 
 .. |copy| unicode:: U+00A9   .. copyright symbol
