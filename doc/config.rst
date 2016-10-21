@@ -88,9 +88,11 @@ General Settings
 .. glossary::
 
     title
-        The title is displayed in the setup window title. The title should be concise. It will **not** be truncated to
-        fit the title bar. The this setting is also used to construct the name of the backup directory created to store
-        the original files before modifying or overwriting them.
+        The title is displayed in the setup window title.
+        The title should be concise.
+        It will **not** be truncated to fit the title bar.
+        This setting is also used to construct the name of the backup directory created to store the original files
+        before modifying or overwriting them.
 
     globalHeader
         This will function as the default heading on top of each inserted block. Keep in mind to include a comment flag
@@ -258,7 +260,7 @@ For examples see :ref:`diffStyleExamples`.
 .. glossary::
 
     diffGUIstyles.background
-        This is the canvas (background) color, below the text.
+        This is the canvas (background) color, beneath the text.
 
     diffGUIstyles.default
         This is the font color.
@@ -349,13 +351,13 @@ Here are two examples of diff coloring schemes. ``FeatShareDefault`` is the defa
 Features
 --------
 
-Here the feature specifics are set.
+Here is where the feature specifics are set.
 
 .. glossary::
 
     features.path
-        The path in which the feature files are stored. This may be a relative path. Usually this should be empty, since
-        the setup extracts all files to a temporary directory. Nevertheless, the file structure is preserved.
+        The path in which the feature files are stored. This should be a relative path. Usually this should be empty,
+        since the setup extracts all files to a temporary directory. Nevertheless, the file structure is preserved.
 
     features.filePattern
         This is the regex file pattern for all feature files. If the feature files end on .feat this setting should be
@@ -365,9 +367,10 @@ Here the feature specifics are set.
             **Note:** Back-slashes need to be escaped by an additional backslash (``\\``).
 
     features.infoTextAnchor
-        Feature files contain key-value pairs, where the key is an anchor-name and the value is the text to insert, see
-        :ref:`anchor patterns <features.anchorPattern>`. The ``infoTextAnchor`` is an exception. If the feature files
-        contain a key of the name of this setting the value will be displayed as information in the setup window.
+        Feature files contain key-value pairs, where the key is an :ref:`trait <features.traits>` and the value is the
+        text to insert, see :ref:`anchor patterns <features.anchorPattern>`. The ``infoTextAnchor`` is an exception.
+        If the feature files contain a key of the name of this setting the value will be displayed as information in the
+        setup window.
         Default is "infoText".
 
 .. _features.anchorPattern:
@@ -379,15 +382,15 @@ This set of options changes the key-value syntax in feature files. The default s
 
 .. container:: coderef
 
-    | ### anchorName ###
-    | text to insert at anchor
+    | ### trait ###
+    | text to insert
     | spanned over multiple lines
-    | ### nextAnchorName ###
+    | ### nextTrait ###
     | some other text to insert
     | ### end ###
 
-Where the value (text to insert at anchor) is wrapped by its key (anchor name) and the next. The keys (anchor names) are
-indicated by three pound signs.
+Where the value (text to insert at anchor) is wrapped by its key (:ref:`trait <features.traits>`) and the next.
+The keys (:ref:`trait <features.traits>`) are indicated by three pound signs.
 
 .. note::
     **Note:** There is typically no need to ever change the anchor pattern. If everything works, do not touch these
@@ -396,7 +399,7 @@ indicated by three pound signs.
 .. glossary::
 
     features.anchorPattern.regex
-        This setting defines by regex how key-value pairs (anchor name and text to insert, respectively) are captured.
+        This setting defines by regex how key-value pairs (trait and text to insert, respectively) are captured.
         Key and value need to be matched in subpatterns, which will be assigned in
         :std:term:`features.anchorPattern.key` and :std:term:`features.anchorPattern.value`.
 
@@ -411,7 +414,7 @@ indicated by three pound signs.
         See :ref:`Regex flags <regexflags>`
 
     features.anchorPattern.key
-        The subpattern of :std:term:`regex <features.anchorPattern.regex>` which captures the key (anchor name). E.g.
+        The subpattern of :std:term:`regex <features.anchorPattern.regex>` which captures the key (trait). E.g.
         ``$1``.
 
     features.anchorPattern.value
@@ -423,9 +426,10 @@ indicated by three pound signs.
 File Copy Anchor
 ^^^^^^^^^^^^^^^^
 
-Feature files contain key-value pairs, where the key is an anchor-name and the value is the text to insert, see
-:ref:`anchor patterns <features.anchorPattern>`. The ``fileCopyAnchor`` is an exception. It defines what files should be
-copied from the setup to the target directory (including a target sub-directory path).
+Feature files contain key-value pairs, where the key is an :ref:`trait <features.traits>` and the value is the text to
+insert, see :ref:`anchor patterns <features.anchorPattern>`.
+The ``fileCopyAnchor`` is an exception.
+It defines what files should be copied from the setup to the target directory (including a target sub-directory path).
 
 .. note::
     **Note:** There is typically no need to ever change the file copy pattern. If everything works, do not touch these
@@ -434,7 +438,7 @@ copied from the setup to the target directory (including a target sub-directory 
 .. glossary::
 
     features.fileCopyAnchor.name
-        The anchor name to indicate the file copy anchor.
+        The trait name to indicate the file copy anchor.
 
     features.fileCopyAnchor.regex
         This setting defines by regex how from-to pairs (origin file name and destination path, respectively) are
@@ -464,9 +468,10 @@ copied from the setup to the target directory (including a target sub-directory 
 File Delete Anchor
 ^^^^^^^^^^^^^^^^^^
 
-Feature files contain key-value pairs, where the key is an anchor-name and the value is the text to insert, see
-:ref:`anchor patterns <features.anchorPattern>`. The ``fileDeleteAnchor`` is an exception. It defines what files should
-be deleted from the target directory.
+Feature files contain key-value pairs, where the key is an :ref:`trait <features.traits>` and the value is the text to
+insert, see :ref:`anchor patterns <features.anchorPattern>`.
+The ``fileDeleteAnchor`` is an exception.
+It defines what files should be deleted from the target directory.
 
 .. note::
     **Note:** There is typically no need to ever change the file delete pattern. If everything works, do not touch these
@@ -475,7 +480,7 @@ be deleted from the target directory.
 .. glossary::
 
     features.fileDeleteAnchor.name
-        The anchor name to indicate the file delete anchor.
+        The trait name to indicate the file delete anchor.
 
     features.fileDeleteAnchor.regex
         This setting defines by regex how the file paths of the files to delete are captured. The subpattern containing

@@ -14,7 +14,7 @@ Anchors
     anchors/repeatInstructions
 
 Anchors decide which features are integrated into which target files.
-Many features may rely on the same anchors, anchors may be shared accross different projects.
+Many features may rely on the same anchors, anchors may be shared across different projects.
 
 There are also special anchors, that are called :ref:`conditional anchors <conditionalAnchor>`.
 
@@ -49,7 +49,7 @@ See :ref:`Quick Start <tutorial>` to find out what this anchor does (the anchor 
     |         }
     |     },
     |     :ref:`"insert" <anchors.insert>`: {
-    |         :std:term:`"string" <insert.string>`: "const int {const_name}{ :const_name:19}= {idx};\n",
+    |         :std:term:`"string" <insert.string>`: "const int {const_name}{ :const_name:19}= {idx};\\n",
     |         :std:term:`"replace" <insert.replace>`: {
     |             "const_name": "const"
     |         },
@@ -90,11 +90,13 @@ General Settings
 .. glossary::
 
     description
-        Description of the action the anchor will perform. This will be shown in the progress bar of the installation.
+        Description of the action the anchor will perform.
+        This will be shown in the progress bar of the installation.
 
     path
-        Relative path of the file the anchor will modify. If the file does not exist, the anchor will
-        :std:term:`fail<ignoreOnFail>`.
+        Relative path of the file the anchor will modify.
+        If the file does not exist, the anchor will create the file if the :std:term:`regex.needle` is empty, otherwise
+        the anchor will :std:term:`fail<ignoreOnFail>`.
 
         .. note::
             **Note:** Back-slashes need to be escaped by an additional backslash (``\\``).
@@ -108,8 +110,7 @@ General Settings
         The exact position to hook the new content is set by the :ref:`hook<anchors.hook>`-settings.
 
         .. note::
-            **Note**: Certain characters (like back-slashes) need to be escaped by an additional backslash
-            (e.g. ``\\``).
+            **Note**: Back-slashes need to be escaped by an additional backslash (``\\``).
 
     regex.flags
     regex.flags.caseSensitive
@@ -121,10 +122,10 @@ General Settings
 
     matchBracket
         :ref:`Regex <regex>` does not support nested structures like matching brackets.
-        Nevertheless, it is possible to find the position of a matching bracket/paranthesis with this property.
-        This property takes an associated list of variable names and :ref:`subpatterns <subpatterns>`.
-        Each variable name stores the matched character for futher use and the subpattern from the :std:term:`regex`
-        (e.g. ``$1``).
+        Nevertheless, FeatShare is able to find the position of a matching bracket/parenthesis with this property.
+        This property takes an associated list of variable-:ref:`subpatterns <subpatterns>` pairs.
+        Each variable stores the matched character for further use and the subpattern from the :std:term:`regex` (e.g.
+        ``$1``).
 
         .. note::
             **Note**: The subpattern must entail only **one** character, which is either one of these: ``{``, ``(`` or
@@ -148,6 +149,8 @@ General Settings
         Anchors defined (and thus processed) before the anchors in which the variables are set will not find them.
 
         Stored variables are the only variables that can be used as :std:term:`global dependencies<globalDependencies>`.
+
+        Stored variables are the basis of :ref:`conditional anchors <conditionalAnchor>`.
 
         .. note::
             **Note**: These global variables only store the contents of a pattern, not their position properties, as
@@ -184,8 +187,8 @@ If an anchor does not define a hook, it is a :ref:`conditional anchor<conditiona
               recommended
 
         .. note::
-            **Note**: Global variables (as defined in :std:term`storeVars`) **cannot** be used as they do not have
-            position properties.
+            **Note**: Global variables (as defined in :std:term:`storeVars`) **cannot** be used as they do not carry
+            positional information.
 
     hook.length
         This specifies the length of the hook.
@@ -243,7 +246,7 @@ is defined in this part.
         The replace phrase can be any of the following.
 
             - Global variable (see :std:term:`storeVars`)
-            - Feature (see :ref:`features <features>`)
+            - Feature trait (see :ref:`traits <features.traits>`)
             - Repeat-instructions (see :ref:`repeatInstructions <repeatInstructions>`)
             - Literal text
 
@@ -259,7 +262,8 @@ is defined in this part.
         This block enables padding the beginning of all lines by phrase (typically for indenting, hence the name)
 
     insert.indent.string
-        The characters used to prefix all lines. E.g. ``\t\t`` for indenting by two tabs.
+        The characters used to prefix all lines, e.g. ``\t\t`` for indenting by two tabs.
+        :ref:`Constrained repeat-instructions <constrainedRepeatInstructions>` may be used, e.g. ``{\t:2}``.
 
     insert.indent.exclFirstLine
         If ``true``, do not add indentation to the first line of :std:term:`insert.string`.
@@ -335,7 +339,7 @@ Each is listed in their own associative list, making up a non-associative list o
             A block being either a feature or the hook phrase (if :std:term:`hook.length` > 0).
             This means if the :std:term:`insert.string` is referencing the finalReplace.needle twice, both will have the
             same value.
-            Only after proceeding to the next insertion block, it will increase.
+            Only after proceeding to the insertion block, it will increase.
 
         See this short example:
 
@@ -343,16 +347,16 @@ Each is listed in their own associative list, making up a non-associative list o
 
             | ...
             |
-            | “insert”: {
-            |     “string”: “increase this value {idx} twice {idx}\n”,
+            | "insert": {
+            |     "string": "increase this value {idx} twice {idx}\\n",
             |
             | ...
             |
-            | “finalReplace”: [
+            | "finalReplace": [
             |     {
-            |         “needle”: “idx”,
-            |         “replace”: “0”,
-            |         “incr”: 1
+            |         "needle": "idx",
+            |         "replace": "0",
+            |         "incr": 1
             |     }
             | ],
             |
@@ -369,10 +373,10 @@ Each is listed in their own associative list, making up a non-associative list o
             | ...
 
     finalReplace.first
-        A special phrase may be defined for the first replacement.
+        A special phrase may be defined instead of the first replacement.
 
     finalReplace.last
-        A special phrase may be defined for the last replacement.
+        A special phrase may be defined instead of the last replacement.
 
 .. _anchors.deleteFiles:
 
@@ -403,7 +407,9 @@ See :ref:`conditional anchors<conditionalAnchor>`.
             **Note**: Because of the nature of processing order regarding :ref:`conditional anchors<conditionalAnchor>`,
             the :std:term:`global variables <storeVars>` of an anchor are set **after** the deleteFiles instruction is
             processed.
-            Thus, they cannot be used here.
+            Thus, they cannot be used in the same anchors they are defined.
+            A solution is to define two anchors instead (one sets the global variable, the other references this
+            variable and deletes the files).
 
 .. _anchors.conditions:
 
@@ -431,7 +437,7 @@ See :ref:`conditional anchors<conditionalAnchor>` for more details.
 
         .. note::
             **Note**: Unlike :std:term:`feature dependencies <dependencies>`, these global dependencies will cause the
-            anchor to fail, if their conditions not met.
+            anchor to fail, if their conditions are not met.
             See :std:term:`ignoreOnFail` for more information.
 
     dependencies
@@ -451,7 +457,7 @@ See :ref:`conditional anchors<conditionalAnchor>` for more details.
         feature.
 
     ignoreOnFail
-        Set to ``false``, to output error when the anchor fails (default and recommended behavior), or set to warning
+        Set to ``false``, to output an error when the anchor fails (default and recommended behavior), or set to warning
         phrase.
 
         An anchor may fail for many different reasons.

@@ -33,16 +33,16 @@ Another feature might be green apples.
 The green-apples-feature will also have the trait 'color', but it is green in this case.
 
 Traits are references for anchors.
-There is an anchor for each trait, although not always the case (some anchors may use the same trait in different
-ways).
+There is an anchor for each trait, although this is not always the case (some anchors may use the same trait in
+different ways).
 
 In the apple example, there is probably an anchor that targets the color trait and incorporates it into the correct file
 at the correct position.
-If a trait has to modify more than one file or several different lines of text in one file, there might be more than one
+If a trait has to modify more than one file or several different parts of a file, there might be more than one
 anchor that references that trait.
 
-Traits are essentially sets key-value pairs, where key is the trait name (e.g. 'color') and value is the expression of
-the trait (e.g. 'red'), or to put it differently, the text to be inserted.
+Traits are essentially sets of key-value pairs, where key is the trait name (e.g. 'color') and value is the expression
+of the trait (e.g. 'red'), or to put it differently, the text to be inserted.
 
 The way traits are represented in a feature file depends on the definitions in the :ref:`config <configjson>`.
 However, it should not be necessary to change the default syntax which looks like this.
@@ -50,7 +50,7 @@ However, it should not be necessary to change the default syntax which looks lik
 .. container:: coderef
 
     | ### trait1 ###
-    | text to insert at anchor
+    | text to insert
     | spanned over multiple lines
     | ### trait2 ###
     | some other text to insert
@@ -69,7 +69,7 @@ The red-apple-feature would look like this. Of course, a feature usually has mor
 
 In the next sections there will be a few special traits.
 
-See alsoe :ref:`anchor patterns <features.anchorPattern>`.
+See also :ref:`anchor patterns <features.anchorPattern>`.
 
 .. note::
     **Note**: Outside of this section, traits may also be more commonly referred to as anchors.
@@ -80,7 +80,7 @@ Info Text Anchor
 ----------------
 
 Each feature is selectable by the end-user before integration.
-To give more information about, there is a short description for each feature when it is selected.
+To give more information about them, a short description is displayed for each feature when it is selected.
 This description can be set by a specific trait .
 The name of this trait may be changed in the :ref:`config <configjson>` with :std:term:`features.infoTextAnchor`.
 The default name is ``infoText``.
@@ -94,6 +94,8 @@ Taking the apple example, this would look like this.
     | ### color ###
     | red
     | ### end ###
+
+.. _features.fileCopy:
 
 File Copy Anchor
 ----------------
@@ -110,8 +112,8 @@ The default name is ``copyFiles`` with the following syntax.
     | ### infoText ###
     | This feature will integrate a red apple.
     | ### copyFiles ###
-    | local\directory\file.txt|relative\path\in\target\environment\
-    | another\file.exe|relative\path\to\destination\
+    | local\\directory\\file.txt|relative\\path\\in\\target\\environment\\
+    | another\\file.exe|relative\\path\\to\\destination\\
     | ### color ###
     | red
     | ### end ###
@@ -138,16 +140,16 @@ The default name is ``deleteFiles`` with the following syntax.
     | ### infoText ###
     | This feature will integrate a red apple.
     | ### copyFiles ###
-    | local\directory\file.txt|relative\path\in\target\environment\
-    | another\file.exe|relative\path\to\destination\
+    | local\\directory\\file.txt|relative\\path\\in\\target\\environment\\
+    | another\\file.exe|relative\\path\\to\\destination\\
     | ### deleteFiles ###
-    | relative\path\in\target\environment\old_file.txt
-    | relative\path\to\destination\old_file.exe
+    | relative\\path\\in\\target\\environment\\old_file.txt
+    | relative\\path\\to\\destination\\old_file.exe
     | ### color ###
     | red
     | ### end ###
 
-Here, the each line is a file to delete represented by a relative path in the target environment.
+Here, each line is a file to delete represented by a relative path in the target environment.
 
 .. note::
     **Note**: For security reasons it is not allowed to delete directories.

@@ -8,7 +8,7 @@ Regular Expressions
 FeatShare relies heavily on regular expressions (here abbreviated with 'regex').
 To integrate new content a line number does not suffice, as it might differ in the target environment.
 A literal search phrase is also dangerous, since that phrase may have been altered with regards to spaces,
-capitalization differing indices and much more.
+capitalization, differing indices and much more.
 
 If, for example, looking for a variable definition, the target environment might differ from what one would expect.
 

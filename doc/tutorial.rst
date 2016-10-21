@@ -10,8 +10,8 @@ At the start of each setup are of course the features which should be integrated
 Nevertheless, there is a little more to setup. This is a short outline of what we need to do.
 
 #. :ref:`Create a configuration file <tutorial.configJson>`
-#. :ref:`Select what to integrate <tutorial.features>`
-#. :ref:`Create anchors <tutorial.anchors>`
+#. :ref:`Select what to integrate (Create features) <tutorial.features>`
+#. :ref:`Define how to integrate (Create anchors) <tutorial.anchors>`
 #. :ref:`Build a setup <tutorial.buildSetup>`
 
 .. _tutorial.premise:
@@ -22,9 +22,9 @@ Premise
 Imagine a programming project in which we want to modify a set of constants.
 
 This project is shared with different parties.
-The project turned into many independent projects, all sharing the same base structure, but differing a lot.
+The project turned into many independent projects, all sharing the same underlying structure, but deviating a lot.
 Of course, the projects are not compatible anymore and exchanging files is not possible.
-Here are parts we want to modify.
+Here is the part we want to modify.
 
 path\\to\\file1.cpp
 
@@ -39,11 +39,11 @@ path\\to\\file1.cpp
     127
     138  ...
 
-The only really certain information we have about were to find the parts are the file it is in and the names of the
+The only really certain information we have about where to find the part is the file it is in and the names of the
 constants.
 
-The first though might be to just search and replace the affected parts or replace the lines by line number.
-However, take a look how the ``file1.cpp`` looks on a different computer:
+A first thought might be to just search and replace the affected parts or replace them by line number.
+However, take a look at how the ``file1.cpp`` looks on a different computer:
 
 .. code-block:: cpp
 
@@ -56,12 +56,14 @@ However, take a look how the ``file1.cpp`` looks on a different computer:
     249
     250  ...
 
-First of all, the line numbers are different. The other person seems to have added a lot to the file. Also, and more
-importantly, the spelling and white spaces are different, the code is indented, there is a comment at the end of one
-line and the values are different. How do we go about this?
+First of all, the line numbers are different.
+The other person seems to have added a lot to the file.
+Also, and more importantly, the spelling and white spaces are different, the code is indented, there is a comment at the
+end of one line and the values are different.
+How do we go about this?
 
-Clearly we need to make as little assumptions on the parts we are searching as possible. For that we use
-:ref:`regular expressions <regex>`.
+Clearly we need to make as little assumptions on the parts we are searching as possible.
+For that we will use :ref:`regular expressions <regex>`.
 
 
 .. _tutorial.configJson:
@@ -133,9 +135,10 @@ Let's assume we want to add two new constants before ``CUT_OFF`` and adjust the 
     ### end ###
 
 The next thing we do is specify what is going to be added.
-Here it is only on addition, but features usually consist of a lot of characteristics, here referred to as
+Here it is only one addition, but features usually consist of a lot of characteristics, here referred to as
 :ref:`traits <features.traits>`.
-By the nature of how we are gonna add the constants we will only need their names here as trait.
+Since we want to increment the values, we only need to add their names as traits and no values.
+We will get the values from the target file.
 
 ``newFeature1.feat``::
 
@@ -170,7 +173,7 @@ This can be done with only one anchor.
 
 As seen above ``file1.cpp`` may vary a lot in appearance.
 Since we want to grab a hold of ``CUT_OFF``, we need to create a :ref:`regular expression <regex>` that will match that
-line.
+line for hopefully any modification it might have undergone.
 
 .. note::
     **Note**: In general it is always helpful to make use of the :ref:`Felper <felper>` to find a suited regular
@@ -181,18 +184,21 @@ Here, this regex will match in both cases::
     ^\s*const\s+int\s+CUT_OFF\s+=\s*(\d+)\s*;.*$
 
 With the parentheses around ``\d+`` this regex will create the subpattern ``$1`` for the current value of ``CUT_OFF``.
-We will use this to explicitly replace and increment it.
+We will use this to explicitly increment and replace it.
 
 .. note::
-    **Note**: Back-slashes of the regex need to be escaped by an additional backslash (e.g. ``\\``).
+    **Note**: Back-slashes of the regex need to be escaped by an additional backslash (e.g. ``\\``). See below.
 
-Around this regex we write an anchor specification, which will tell FeatShare how to add the features.
+Around this regex we write an anchor specification, which will tell FeatShare how to add the features that need this
+anchor.
 In the :ref:`configuration file above <tutorial.configJson>` we specified, that the anchors would be in a file called
 ``anchors.json``.
-The anchors has the same structure as the :ref:`configuration file above <tutorial.configJson>` but has a lot of
+The anchor has the same structure (JSON) as the :ref:`configuration file above <tutorial.configJson>` but has a lot of
 different properties.
 Some of these properties are not listed in this example.
-See for more :ref:`anchors <anchors>` details.
+
+.. note::
+    **Note**: See :ref:`anchors <anchors>` for more details.
 
 .. container:: coderef
 
@@ -243,11 +249,11 @@ See for more :ref:`anchors <anchors>` details.
     | ]
 
 The ``regex`` block finds where to add/modify content, the ``hook`` block specifies the exact position and modifies the
-regex matched phrase, the ``inset`` block adds the new content and ``storeVars`` saves the current value of ``CUT_OFF``
+regex matched phrase, the ``insert`` block adds the new content and ``storeVars`` saves the current value of ``CUT_OFF``
 to be used in ``finalReplace`` where the values will be applied to the newly added constants.
 
 .. note::
-    **Note**: Each property is a link leading to a more thorough explanation what it does.
+    **Note**: Each property above is a link leading to a more thorough explanation what it does.
 
 .. note::
     **Note**: For more information on anchors, see :ref:`anchors <anchors>`.
@@ -274,10 +280,15 @@ You may replace it with the :std:term:`diffGUI` option, which will still enable 
 applying them.
 This is very end-user friendly as they can see what the setup will do and can still decide to back out.
 
-The output of setting either :std:term:`dryRun` or :std:term:`diffGUI` will be a diff utility type text looking like
+Note, however, FeatShare always creates a back-up of all to be modified files in a designated back-up directory.
+The actions of FeatShare can always be reverted, as this directory will be kept after the setup is finished.
+If FeatShare notices that something is going to go wrong or went wrong in the process of applying the changes, it will
+revert all changes and leave the files in their original state.
+
+The output of setting either :std:term:`dryRun` or :std:term:`diffGUI` will be a diff utility type of text looking like
 this.
-The first part is the output when performing on the well formatted ``file1.cpp`` the second is the output for the
-ill-formatted version of the file (see :ref:`above <tutorial.premise>`).
+The first part is the output when performing on the well-formatted ``file1.cpp`` the second output is for the
+malformatted version of the file (see :ref:`above <tutorial.premise>`).
 
 .. container:: diffdefault
 

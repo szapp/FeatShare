@@ -19,7 +19,7 @@
 Welcome to the FeatShare Documentation
 ======================================
 
-**FeatShare enables sharing specific features between projects of same origin.**
+**FeatShare enables sharing specific features between text-based projects of same origin.**
 
 While merge-tools generally allow fusing *all* changes from two versions of a project, **FeatShare** integrates only a
 selected set of changes (:ref:`Features <features>`) (along with creation and deletion of files) into an environment.
@@ -41,7 +41,7 @@ This figure illustrates the components of **FeatShare**
   :align: center
   :alt:
 
-:ref:`Features <features>` can use multiple :ref:`anchors <anchors>` to :ref:`hook <hooks>` into a target file at
+:ref:`Features <features>` can use multiple :ref:`anchors <anchors>` to :ref:`hook <hooks>` into various target files at
 certain positions. While anchors may be used by multiple features and across FeatShare setups, features are highly
 specific to a single FeatShare setup, since they carry the information which will be integrated.
 

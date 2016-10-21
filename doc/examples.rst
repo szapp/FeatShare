@@ -5,7 +5,8 @@
 Examples
 ========
 
-For an introduction and the most basic example refer to :ref:`Quick Start <tutorial>`.
+For an introduction and the most basic examples refer to :ref:`Quick Start <tutorial>` and the
+:ref:`feature introduction <features>`.
 Here follow some more advanced examples.
 
 .. note::
@@ -84,7 +85,7 @@ If the number is negative the n-th occurrence from the back of the text will be 
 Indent Lines
 ------------
 
-Lines can easily indented using :ref:`constrained repeat-instructions <constrainedRepeatInstructions>`::
+Lines can easily be indented using :ref:`constrained repeat-instructions <constrainedRepeatInstructions>`::
 
     def plus5(x):
     return x+5
@@ -174,6 +175,30 @@ This results in:
         -num2 = 2;
         +num1       = 0;
         +num2       = 2; // Fixed
+
+
+Add new files
+-------------
+
+A feature may need to add completely new files.
+If it is a purely text-based file, it could technically be added by referencing a non-existent file in the anchors and
+adding an empty regex needle.
+However, this is very inconvenient as the feature file would have to hold the entire content of the new file.
+Instead, features may add new files - even binary files.
+There is no special settings that has to be applied in the anchors.
+This is how it is done.
+
+.. container:: coderef
+
+    | ### infoText ###
+    | This feature will add three new files
+    | ### copyFiles ###
+    | file1.txt|relative\\path\\in\\target\\environment\\
+    | another\\file2.exe|relative\\path\\to\\destination\\
+    | another\\file3.exe|relative\\path\\to\\destination\\
+    | ### end ###
+
+For a more thorough explanation, see the :ref:`feature introduction <features>`.
 
 .. _examples.patch:
 

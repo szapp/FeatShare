@@ -16,7 +16,7 @@ Start the felper and copy the base text into the upper panel.
 The base text is the text in which an :ref:`anchor <anchors>` will try to match its regex.
 In other words, this is the text in which you would like FeatShare to integrate new content.
 
-The second panel is compact version of an :ref:`anchor script <anchors>`.
+The second panel is a compact version of an :ref:`anchor script <anchors>`.
 Only the properties :std:term:`regex <regex>` and :std:term:`matchBracket <matchBracket>` are regarded.
 
 .. note::
