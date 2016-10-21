@@ -2,10 +2,11 @@
 /**
  * BuildSetup.ahk - This is a tool to wrap all necessary files into one setup.
  *
- * FeatShare v0.1-beta - Text integration tool
- * Copyright (C) 2016  szapp <github.com/szapp>
+ * FeatShare v0.2 - Text integration tool
+ * Copyright (C) 2016  szapp <http://github.com/szapp>
  *
  * This file is part of FeatShare.
+ * <http://github.com/szapp/FeatShare>
  *
  * FeatShare is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,8 +21,16 @@
  * You should have received a copy of the GNU General Public License
  * along with FeatShare.  If not, see <http://www.gnu.org/licenses/>.
  *
- * AutoHotkey-JSON (cocobelgica), License: WTFPL <http://wtfpl.net>
- * Class_RichEdit (just me), License: Unlicense <http://unlicense.org>
+ *
+ * Third-party software:
+ *
+ * MPRESS v2.19, Copyright (C) 2007-2012 MATCODE Software,
+ * for license information see: /mpress/LICENSE
+ *
+ * AutoHotkey-JSON v2.1.1, 2013-2016 cocobelgica, WTFPL <http://wtfpl.net>
+ *
+ * Class_RichEdit v0.1.05.00, 2013-2015 just me,
+ * Unlicense <http://unlicense.org>
  *
  *
  * Info: Comments are set to C++ style. Escape character is ` e.g.: `n
@@ -127,7 +136,7 @@ template := "#SingleInstance, ignore`n"
     . "    SplitPath, file, , dir`n"
     . "    FileCreateDir, %destDir%\%dir%`n"
     . "}`n"
-    . "FileInstall, FeatShare.exe, %destDir%\FeatShare.exe, 1`n"
+    . "FileInstall, bin\FeatShare.exe, %destDir%\FeatShare.exe, 1`n"
     . "/*###INSTINSTRUCT###*/`n" // FileInstall instructions for all files to unpack
     . "RunWait, %destDir%\FeatShare.exe, %destDir%, UseErrorLevel`n" // Run FeatShare.exe
     . "err := ErrorLevel`n"
@@ -166,6 +175,7 @@ for relPath, filepath in packFiles {
 template := StrReplace(template, "/*###FILELIST###*/", Trim(fileList, "`n"))
 template := StrReplace(template, "/*###INSTINSTRUCT###*/", Trim(installStr, "`n"))
 bin := "" // Free bin, because it was used before. Must be empty
+VarSetCapacity(bin, 0) // Explicitly shrink the variable (free its memory)
 VarSetCapacity(bin, StrLen(template), 0), P := &bin
 Loop, Parse, template
     NumPut(Asc(A_LoopField), P+0, 0, "Char"), P := P+1

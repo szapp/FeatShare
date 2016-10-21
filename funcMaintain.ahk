@@ -1,10 +1,11 @@
 /**
  * Maintainance and GUI functions for FeatShare.ahk
  *
- * FeatShare v0.1-beta - Text integration tool
- * Copyright (C) 2016  szapp <github.com/szapp>
+ * FeatShare v0.2 - Text integration tool
+ * Copyright (C) 2016  szapp <http://github.com/szapp>
  *
  * This file is part of FeatShare.
+ * <http://github.com/szapp/FeatShare>
  *
  * FeatShare is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,8 +20,16 @@
  * You should have received a copy of the GNU General Public License
  * along with FeatShare.  If not, see <http://www.gnu.org/licenses/>.
  *
- * AutoHotkey-JSON (cocobelgica), License: WTFPL <http://wtfpl.net>
- * Class_RichEdit (just me), License: Unlicense <http://unlicense.org>
+ *
+ * Third-party software:
+ *
+ * MPRESS v2.19, Copyright (C) 2007-2012 MATCODE Software,
+ * for license information see: /mpress/LICENSE
+ *
+ * AutoHotkey-JSON v2.1.1, 2013-2016 cocobelgica, WTFPL <http://wtfpl.net>
+ *
+ * Class_RichEdit v0.1.05.00, 2013-2015 just me,
+ * Unlicense <http://unlicense.org>
  *
  *
  * Info: Comments are set to C++ style. Escape character is ` e.g.: `n
@@ -590,9 +599,9 @@ validateConfig(ByRef config) {
     // Field: features.path, default: ""
     if  !config.features.HasKey("path")
         config.features.path := ""
-    // Field: features.filePattern, default: ".*"
+    // Field: features.filePattern, default: "^.*\.(?!json$)(?!exe$)"
     if  !config.features.HasKey("filePattern")
-        config.features.filePattern := ".*"
+        config.features.filePattern := "^.*\.(?!json$)(?!exe$)"
     // Field: features.anchorPattern
     if  !IsObject(config.features.anchorPattern)
         config.features.anchorPattern := {}

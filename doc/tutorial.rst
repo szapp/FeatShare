@@ -9,204 +9,315 @@ At the start of each setup are of course the features which should be integrated
 
 Nevertheless, there is a little more to setup. This is a short outline of what we need to do.
 
-#. :ref:`Select what to integrate <tutorialFeatures>`
-#. :ref:`Create anchors <tutorialAnchors>`
-#. :ref:`Create configuration <tutorialConfigJson>`
+#. :ref:`Create a configuration file <tutorial.configJson>`
+#. :ref:`Select what to integrate (Create features) <tutorial.features>`
+#. :ref:`Define how to integrate (Create anchors) <tutorial.anchors>`
+#. :ref:`Build a setup <tutorial.buildSetup>`
 
-.. _tutorialFeatures:
+.. _tutorial.premise:
 
-1. Features
------------
+Premise
+-------
 
-First we need to decide **what** we want to integrate - the **how** comes later.
+Imagine a programming project in which we want to modify a set of constants.
 
-Imagine a project shared with different parties. The project turned into many independent projects, all sharing the same
-base structure, but differing a lot. Of course, the projects are not compatible anymore and exchanging files is not
-possible. As an unlikely small-scale example, let's consider a java project with different files. Here are parts we need
-to change. The only really certain information we have about were to find them are the files that they are in and the
-function names.
+This project is shared with different parties.
+The project turned into many independent projects, all sharing the same underlying structure, but deviating a lot.
+Of course, the projects are not compatible anymore and exchanging files is not possible.
+Here is the part we want to modify.
 
-path\\to\\file1\\function1.java::
+path\\to\\file1.cpp
+
+.. code-block:: cpp
 
     121  ...
     122
-    123  public static int substract2(int i)
-    124  {
-    125     return i-2;
-    126  }
+    123  // Constants
+    124  const int AMPLITUDE          = 93;
+    125  const int PHASE              = 94;
+    126  const int CUT_OFF            = 95;
     127
-    128  ...
+    138  ...
 
-path\\to\\file2\\function2.java::
+The only really certain information we have about where to find the part is the file it is in and the names of the
+constants.
 
-    596  ...
-    597
-    598  public static int add2(int i)
-    599  {
-    600      return i+2;
-    601  }
-    602
-    603  ...
+A first thought might be to just search and replace the affected parts or replace them by line number.
+However, take a look at how the ``file1.cpp`` looks on a different computer:
 
-Let's assume we want to change that ``substract2()`` should only accept inputs greater than two and ``add2()`` to be
-private.
-
-The *what* will be stored in a feature file. Each feature has its own file. What exactly defines a feature is up to you.
-Since the changes we want to make are somehow related, let's have them be **one** feature that we want to integrate.
-The name of the feature files are up to you as well as the :std:term:`file extension <features.filePattern>`.
-
-
-
-
-The first though might be to just search and replace the affected parts or replace the lines by line number.
-However, take a look how the ``function1.java`` looks on a different computer::
+.. code-block:: cpp
 
     243  ...
     244
-    245      public static INT  substract2 ( int i ) {
-    246          return i-2;
-    247      }
-    248
-    249  ...
+    245    /* Constants */
+    246  const  int AMPLITUDE     = 88;
+    247  const int   PHASE = 89;
+    248    const   int CUT_OFF  = 90; // TODO: Adjust
+    249
+    250  ...
 
-First of all, the line numbers are different. The other person seems to have added a lot to the file. Also, and more
-importantly, the spelling and white spaces are different, the code is indented and the open curly bracket is in the same
-line instead of the next. How do we go about this?
+First of all, the line numbers are different.
+The other person seems to have added a lot to the file.
+Also, and more importantly, the spelling and white spaces are different, the code is indented, there is a comment at the
+end of one line and the values are different.
+How do we go about this?
 
-Clearly we need to make as little assumptions on the parts we are searching as possible. For that we use
-:ref:`regular expressions <regex>`.
-
-The best way to go about this is to copy everything
-
-.. _tutorialAnchors:
-
-2. Anchors
-----------
-
-Once we know what to insert, we need to make sure it's integrated at the right position - now come the **how**.
+Clearly we need to make as little assumptions on the parts we are searching as possible.
+For that we will use :ref:`regular expressions <regex>`.
 
 
-.. _tutorialConfigJson:
+.. _tutorial.configJson:
 
-3. Configuration: config.json
+1. Configuration: config.json
 -----------------------------
 
-Before beginning to write the feature files of the setup, we will first have to set some general settings for the setup.
+Before doing anything else, we will first write some general settings for the setup.
 
-All of those settings are set using a file name :ref:`config.json <configjson>`. Without this file the setup cannot be
-build. Therefore, the first thing we need to do now is create a file named ``config.json``. Let's keep it simple for now
-and write the following lines to it::
+All of those settings are set using a file named :ref:`config.json <configjson>`.
+Without this file the setup cannot be build.
+Therefore, the first thing we need to do now is create a file named ``config.json``.
+Let's keep it simple for now and write the following lines to it.
 
-    {
-        "title": "My First FeatShare Setup",
-        "globalHeader": "// The lines of code below were inserted by my FeatShare setup!",
-        "log": {
-            "showDebug": false,
-            "showWarn": true,
-            "instantFlush": true,
-            "timeformat": "yyyy-MM-dd HH:mm:ss"
-        },
-        "installInstruction": "Choose the directory in which to integrate the features",
-        "defaultPath": "C:\\Data\\MyProject\\",
-        "dryRun": true,
-        "diffGUI": false,
-        "diffGUIstyle": "windows",
-        "diffGUIstyles": {
-            "windows": {
-                "background": "F0F0F0",
-                "default": "4F4D45",
-                "info": "A2A29D",
-                "remove": "B11000",
-                "add": "50A900"
-            },
-            "monokai": {
-                "background": "272822",
-                "default": "F8F8F2",
-                "info": "75715E",
-                "remove": "F92672",
-                "add": "A6E22E"
-            }
-        },
-        "features": {
-            "path": "",
-            "filePattern": "^.*\\.feat$",
-            "anchorPattern": {
-                "regex": "### ([\\w\\*\\(\\)\\.\\:_]+) ###\\R(.*)\\R### [\\w\\*\\(\\)\\.\\:_]+ ###",
-                "flags": {
-                    "caseSensitive": false,
-                    "dotInclNL": true,
-                    "multiLine": false,
-                    "ungreedy": true
-                },
-                "key": "$1",
-                "value": "$2"
-            },
-            "infoTextAnchor": "infoText",
-            "fileCopyAnchor": {
-                "name": "copyFiles",
-                "regex": "^([^:*?<>|\"]+)\\|([^:*?<>|\"]+)$",
-                "flags": {
-                    "caseSensitive": false,
-                    "dotInclNL": false,
-                    "multiLine": true,
-                    "ungreedy": false
-                },
-                "fromPath": "$1",
-                "toPath": "$2"
-            },
-            "fileDeleteAnchor": {
-                "name": "deleteFiles",
-                "regex": "^([^:*?<>|\"]+)$",
-                "flags": {
-                    "caseSensitive": false,
-                    "dotInclNL": false,
-                    "multiLine": true,
-                    "ungreedy": false
-                },
-                "filePath": "$1"
-            }
-        },
-        "anchors": {
-            "": "^.*\\.json$"
-        }
-    }
+The file is written in `JSON format <http://www.json.org/>`_.
+Mind the commas and the brackets.
+Indentation is not important but helps for readability.
 
+.. container:: coderef
 
-This looks very overwhelming. But don't worry, we will ignore most of these lines for now. For detailed descriptions and
-explanations see :ref:`config.json <configjson>`.
+    | {
+    |     :std:term:`"title" <title>`: "My First FeatShare Setup",
+    |     :std:term:`"globalHeader" <globalHeader>`: "// The lines of code below were inserted by my FeatShare setup!",
+    |     :std:term:`"installInstruction" <installInstruction>`: "Choose the directory in which to integrate the features",
+    |     :std:term:`"defaultPath" <defaultPath>`: "C:\\\\Data\\\\MyProject\\\\",
+    |     :std:term:`"dryRun" <dryRun>`: true,
+    |     :ref:`"features" <config.features>`: {
+    |         :std:term:`"filePattern" <features.filePattern>`: ".*\\\\.feat"
+    |     },
+    |     :ref:`"anchors" <config.anchors>`: {
+    |         "": "^anchors.*\\\\.json$"
+    |     }
+    | }
 
-Let's have a look at the settings that are important to us now.
+There is a lot more that can be set here.
+The absolute minimum for a config file is the setting :ref:`anchors <config.anchors>`.
+For detailed descriptions and explanations see :ref:`config.json <configjson>` or click on the references above.
 
-+----------------------------------------------------------------------------------------------------------------------+
-+----------------------------------------------------------------------------------------------------------------------+
-| **title**                                                                                                            |
-|     E.g.: ``"My First FeatShare Setup"``                                                                             |
-|                                                                                                                      |
-|     This is the title which will be visible in the window title bar of the setup. Also the backup directory in which |
-|     all affected files will be copied before being modified, will be constructed from this title.                    |
-|     A recommended title should not be to long.                                                                       |
-+----------------------------------------------------------------------------------------------------------------------+
-| **globalHeader**                                                                                                     |
-|     E.g.: ``"// The lines of code below were inserted by my FeatShare setup!"``                                      |
-|                                                                                                                      |
-|     This is setting is optional. This will function as the default heading on top of each inserted block. As         |
-|     **FeatShare** was written with coding in mind the example her is preceded by a C++ style comment flag ``//``.    |
-|     FeatShare is by no means restricted to only be used on coding projects, but if it is used on one, keep in mind to|
-|     include a comment flag here (**if** the header should be a comment).                                             |
-|                                                                                                                      |
-|     This is a **global** header as the name indicates. Each anchor may have its own ("local") header. We will come to|
-|     that later. Feel free to leave this setting blank (``""``).                                                      |
-+----------------------------------------------------------------------------------------------------------------------+
-| **installInstruction**                                                                                               |
-|     E.g.: ``"Choose the directory in which to integrate the features"``                                              |
-|                                                                                                                      |
-|     This description will be shown in the setup window above the target directory (see below). Choose a phrase which |
-|     is not too long.                                                                                                 |
-+----------------------------------------------------------------------------------------------------------------------+
-| **defaultPath**                                                                                                      |
-|     E.g.: ``"C:\\Data\\MyProject\\"``                                                                                |
-|                                                                                                                      |
-|     This is the default directory which will be selected by default and is visible in the setup window below the     |
-|     **installInstruction**, before the end-use will select their preferred directory. Note, that the backslashes need|
-|     to be escaped by an additional backslash (``\\``).                                                               |
-+----------------------------------------------------------------------------------------------------------------------+
+.. _tutorial.features:
+
+2. Features
+-----------
+
+Next we need to decide **what** we want to integrate - the **how** comes later.
+
+The *what* will be stored in a feature file.
+Each feature has its own file.
+What exactly defines a feature is up to you.
+Let's add two new constants, for each of which we will create their own feature (file).
+The name of the feature files are also up to you, as well as the :std:term:`file extension <features.filePattern>`.
+Here we will stick to the file extension :ref:`defined above <tutorial.configJson>` and name the feature files
+``newFeature1.feat`` and ``newFeature2.feat``.
+
+The first thing we define in the feature files is the information text.
+This text is the description that will be displayed when selecting the feature in the setup before starting the
+integration.
+Let's assume we want to add two new constants before ``CUT_OFF`` and adjust the indices accordingly.
+
+``newFeature1.feat``::
+
+    ### infoText ###
+    This feature adds the FREQ_IN constant.
+    ### end ###
+
+``newFeature2.feat``::
+
+    ### infoText ###
+    This feature adds the FREQ_OUT constant.
+    ### end ###
+
+The next thing we do is specify what is going to be added.
+Here it is only one addition, but features usually consist of a lot of characteristics, here referred to as
+:ref:`traits <features.traits>`.
+Since we want to increment the values, we only need to add their names as traits and no values.
+We will get the values from the target file.
+
+``newFeature1.feat``::
+
+    ### infoText ###
+    This feature adds the FREQ_IN constant.
+    ### newConstant ###
+    FREQ_IN
+    ### end ###
+
+``newFeature2.feat``::
+
+    ### infoText ###
+    This feature adds the FREQ_OUT constant.
+    ### newConstant ###
+    FREQ_OUT
+    ### end ###
+
+.. note::
+    **Note**: For more information on features, see :ref:`features <features>`.
+
+.. _tutorial.anchors:
+
+3. Anchor
+---------
+
+Once we know what to insert, we need to make sure it's integrated at the right position - now comes the **how**.
+
+The new constants needs to be added between ``PHASE`` and ``CUT_OFF`` with the value of ``CUT_OFF`` while increasing it
+for ``CUT_OFF``.
+This can be done with only one anchor.
+(More sophisticated changes usually need multiple anchors.)
+
+As seen above ``file1.cpp`` may vary a lot in appearance.
+Since we want to grab a hold of ``CUT_OFF``, we need to create a :ref:`regular expression <regex>` that will match that
+line for hopefully any modification it might have undergone.
+
+.. note::
+    **Note**: In general it is always helpful to make use of the :ref:`Felper <felper>` to find a suited regular
+    expression.
+
+Here, this regex will match in both cases::
+
+    ^\s*const\s+int\s+CUT_OFF\s+=\s*(\d+)\s*;.*$
+
+With the parentheses around ``\d+`` this regex will create the subpattern ``$1`` for the current value of ``CUT_OFF``.
+We will use this to explicitly increment and replace it.
+
+.. note::
+    **Note**: Back-slashes of the regex need to be escaped by an additional backslash (e.g. ``\\``). See below.
+
+Around this regex we write an anchor specification, which will tell FeatShare how to add the features that need this
+anchor.
+In the :ref:`configuration file above <tutorial.configJson>` we specified, that the anchors would be in a file called
+``anchors.json``.
+The anchor has the same structure (JSON) as the :ref:`configuration file above <tutorial.configJson>` but has a lot of
+different properties.
+Some of these properties are not listed in this example.
+
+.. note::
+    **Note**: See :ref:`anchors <anchors>` for more details.
+
+.. container:: coderef
+
+    | [
+    |     {
+    |         :std:term:`"description" <description>`: "Add new constant and increase CUT_OFF",
+    |         :std:term:`"path" <path>`: "path\\\\to\\\\file1.cpp",
+    |         :std:term:`"regex" <regex>`: {
+    |             :std:term:`"needle" <regex.needle>`: "^\\\\s*const\\\\s+int\\\\s+CUT_OFF\\\\s+=\\\\s*(\\\\d+)\\\\s*;.*$",
+    |             :std:term:`"flags" <regex.flags>`: {
+    |                 :std:term:`"caseSensitive" <regex.flags.caseSensitive>`: false,
+    |                 :std:term:`"dotInclNL" <regex.flags.dotInclNL>`: false,
+    |                 :std:term:`"multiLine" <regex.flags.multiLine>`: true,
+    |                 :std:term:`"ungreedy" <regex.flags.ungreedy>`: false,
+    |                 :std:term:`"occurrence" <regex.flags.occurrence>`: 1
+    |             }
+    |         },
+    |         :std:term:`"storeVars" <storeVars>`: {
+    |             "max_const": "$1"
+    |         },
+    |         :ref:`"hook" <anchors.hook>`: {
+    |             :std:term:`"start" <hook.start>`: "$0",
+    |             :std:term:`"length" <hook.length>`: "$0",
+    |             :std:term:`"before" <hook.before>`: true,
+    |             :std:term:`"replace" <hook.replace>`: {
+    |                 "$1": "{idx}"
+    |             }
+    |         },
+    |         :ref:`"insert" <anchors.insert>`: {
+    |             :std:term:`"string" <insert.string>`: "const int {newConst}{ :newConst:19}= {idx};\\n",
+    |             :std:term:`"replace" <insert.replace>`: {
+    |                 "newConst": "newConstant"
+    |             },
+    |         },
+    |         :std:term:`"setHeader" <setHeader>`: true,
+    |         :ref:`"finalReplace" <anchors.finalReplace>`: [
+    |             {
+    |                 :std:term:`"needle" <finalReplace.needle>`: "idx",
+    |                 :std:term:`"replace" <finalReplace.replace>`: "max_const",
+    |                 :std:term:`"incr" <finalReplace.incr>`: 1
+    |             }
+    |         ],
+    |         :std:term:`"dependencies" <dependencies>`: [
+    |             "newConstant"
+    |         ],
+    |         :std:term:`"ignoreOnFail" <ignoreOnFail>`: false
+    |     }
+    | ]
+
+The ``regex`` block finds where to add/modify content, the ``hook`` block specifies the exact position and modifies the
+regex matched phrase, the ``insert`` block adds the new content and ``storeVars`` saves the current value of ``CUT_OFF``
+to be used in ``finalReplace`` where the values will be applied to the newly added constants.
+
+.. note::
+    **Note**: Each property above is a link leading to a more thorough explanation what it does.
+
+.. note::
+    **Note**: For more information on anchors, see :ref:`anchors <anchors>`.
+
+.. _tutorial.buildSetup:
+
+4. Building a Setup
+-------------------
+
+This is all there is to it.
+Now we create a setup from the created files.
+
+.. note::
+    **Note**: For details on how to build a setup from these three types of files (configuration, anchors, features) see
+    :ref:`Build Setup <buildSetup>`.
+
+Result
+------
+
+Since we set the option :std:term:`dryRun`, the setup will only perform a test run and not actually make any changes to
+the target environment.
+To "arm" the setup remove the dryRun option in the configuration.
+You may replace it with the :std:term:`diffGUI` option, which will still enable the preview of the changes before
+applying them.
+This is very end-user friendly as they can see what the setup will do and can still decide to back out.
+
+Note, however, FeatShare always creates a back-up of all to be modified files in a designated back-up directory.
+The actions of FeatShare can always be reverted, as this directory will be kept after the setup is finished.
+If FeatShare notices that something is going to go wrong or went wrong in the process of applying the changes, it will
+revert all changes and leave the files in their original state.
+
+The output of setting either :std:term:`dryRun` or :std:term:`diffGUI` will be a diff utility type of text looking like
+this.
+The first part is the output when performing on the well-formatted ``file1.cpp`` the second output is for the
+malformatted version of the file (see :ref:`above <tutorial.premise>`).
+
+.. container:: diffdefault
+
+    .. code-block:: diff
+
+        --- a\path\to\file1.cpp
+        +++ b\path\to\file1.cpp
+        @@ -123,4 +123,7 @@
+         // Constants
+         const int AMPLITUDE          = 93;
+         const int PHASE              = 94;
+        -const int CUT_OFF            = 95;
+        +// The lines of code below were inserted by my FeatShare setup!
+        +const int FREQ_IN            = 95;
+        +const int FREQ_OUT           = 96;
+        +const int CUT_OFF            = 97;
+
+.. container:: diffdefault
+
+    .. code-block:: diff
+
+        --- a\path\to\file1.cpp
+        +++ b\path\to\file1.cpp
+        @@ -245,4 +245,7 @@
+           /* Constants */
+         const  int AMPLITUDE     = 88;
+         const int   PHASE = 89;
+        -  const   int CUT_OFF  = 90; // TODO: Adjust
+        +// The lines of code below were inserted by my FeatShare setup!
+        +const int FREQ_IN            = 90;
+        +const int FREQ_OUT           = 91;
+        +  const   int CUT_OFF  = 92; // TODO: Adjust

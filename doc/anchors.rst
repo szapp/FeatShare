@@ -8,35 +8,39 @@ Anchors
 .. toctree::
     :hidden:
 
-    anchors/index
     anchors/regex
     anchors/hooks
     anchors/conditional
+    anchors/repeatInstructions
 
-This is one anchor with a complete list of settings.
+Anchors decide which features are integrated into which target files.
+Many features may rely on the same anchors, anchors may be shared across different projects.
+
+There are also special anchors, that are called :ref:`conditional anchors <conditionalAnchor>`.
+
+This is an example anchor with a complete list of settings.
+See :ref:`Quick Start <tutorial>` to find out what this anchor does (the anchor there might deviate slightly).
 
 .. container:: coderef
 
-
-
     | {
     |     :std:term:`"description" <description>`: "Anchor description",
-    |     :std:term:`"path" <path>`: "path\\to\\file_to_modify",
+    |     :std:term:`"path" <path>`: "path\\\\to\\\\file_to_modify",
     |     :std:term:`"regex" <regex>`: {
-    |         "needle": "const.+int.+CUT_OFF.*=[^\\d]*(\\d+).*$",
-    |         "flags": {
-    |             "caseSensitive": false,
-    |             "dotInclNL": false,
-    |             "multiLine": true,
-    |             "ungreedy": false,
-    |             "occurrence": 1
+    |         :std:term:`"needle" <regex.needle>`: "const.+int.+CUT_OFF.*=[^\\\\d]*(\\\\d+).*$",
+    |         :std:term:`"flags" <regex.flags>`: {
+    |             :std:term:`"caseSensitive" <regex.flags.caseSensitive>`: false,
+    |             :std:term:`"dotInclNL" <regex.flags.dotInclNL>`: false,
+    |             :std:term:`"multiLine" <regex.flags.multiLine>`: true,
+    |             :std:term:`"ungreedy" <regex.flags.ungreedy>`: false,
+    |             :std:term:`"occurrence" <regex.flags.occurrence>`: 1
     |         }
     |     },
     |     :std:term:`"matchBracket" <matchBracket>`: {},
     |     :std:term:`"storeVars" <storeVars>`: {
     |         "max_const": "$1"
     |     },
-    |     :std:term:`"hook" <hook>`: {
+    |     :ref:`"hook" <anchors.hook>`: {
     |         :std:term:`"start" <hook.start>`: "$0",
     |         :std:term:`"length" <hook.length>`: "$0",
     |         :std:term:`"before" <hook.before>`: true,
@@ -44,23 +48,23 @@ This is one anchor with a complete list of settings.
     |             "$1": "{idx}"
     |         }
     |     },
-    |     :std:term:`"insert" <insert>`: {
-    |         :std:term:`"string" <insert.string>`: "const int {const_name}{ :const_name:19}= {idx};\n",
+    |     :ref:`"insert" <anchors.insert>`: {
+    |         :std:term:`"string" <insert.string>`: "const int {const_name}{ :const_name:19}= {idx};\\n",
     |         :std:term:`"replace" <insert.replace>`: {
     |             "const_name": "const"
     |         },
-    |         :std:term:`"stripTrailingNL" <stripTrailingNL>`: false,
-    |         :std:term:`"indent" <indent>`: {
-    |             :std:term:`"string" <indent.string>`: "",
-    |             :std:term:`"exclFirstLine" <indent.exclFirstLine>`: false,
-    |             :std:term:`"exclHeader" <indent.exclHeader>`: false
+    |         :std:term:`"stripTrailingNL" <insert.stripTrailingNL>`: false,
+    |         :std:term:`"indent" <insert.indent>`: {
+    |             :std:term:`"string" <insert.indent.string>`: "",
+    |             :std:term:`"exclFirstLine" <insert.indent.exclFirstLine>`: false,
+    |             :std:term:`"exclHeader" <insert.indent.exclHeader>`: false
     |         }
     |     },
     |     :std:term:`"newlinesBefore" <newlinesBefore>`: 0,
     |     :std:term:`"newlinesAfter" <newlinesAfter>`: 1,
     |     :std:term:`"localHeader" <localHeader>`: "",
     |     :std:term:`"setHeader" <setHeader>`: true,
-    |     :std:term:`"finalReplace" <finalReplace>`: [
+    |     :ref:`"finalReplace" <anchors.finalReplace>`: [
     |         {
     |             :std:term:`"needle" <finalReplace.needle>`: "idx",
     |             :std:term:`"replace" <finalReplace.replace>`: "max_const",
@@ -69,7 +73,7 @@ This is one anchor with a complete list of settings.
     |             :std:term:`"last" <finalReplace.last>`: "1000",
     |         }
     |     ],
-    |     :std:term:`"deleteFiles" <deleteFiles>`: {
+    |     :ref:`"deleteFiles" <anchors.deleteFiles>`: {
     |         :std:term:`"paths" <deleteFiles.paths>`: [],
     |         :std:term:`"replace" <deleteFiles.replace>`: {}
     |     },
@@ -86,109 +90,384 @@ General Settings
 .. glossary::
 
     description
-        tbd
+        Description of the action the anchor will perform.
+        This will be shown in the progress bar of the installation.
 
     path
-        tbd
+        Relative path of the file the anchor will modify.
+        If the file does not exist, the anchor will create the file if the :std:term:`regex.needle` is empty, otherwise
+        the anchor will :std:term:`fail<ignoreOnFail>`.
+
+        .. note::
+            **Note:** Back-slashes need to be escaped by an additional backslash (``\\``).
 
     regex
-        tbd
+    regex.needle
+        :ref:`Regular expression <regex>` to match desired part in the target file.
+        If the phrase is non-empty and not found in the file but the file exists, the anchor will
+        :std:term:`fail<ignoreOnFail>`.
+        If the file does not exist and needle is empty, the file will be created.
+        The exact position to hook the new content is set by the :ref:`hook<anchors.hook>`-settings.
 
-    needle
-        tbd
+        .. note::
+            **Note**: Back-slashes need to be escaped by an additional backslash (``\\``).
 
-    flags
-        tbd
+    regex.flags
+    regex.flags.caseSensitive
+    regex.flags.dotInclNL
+    regex.flags.multiLine
+    regex.flags.ungreedy
+    regex.flags.occurrence
+        See :ref:`Regex flags <regexflags>`
 
     matchBracket
-        tbd
+        :ref:`Regex <regex>` does not support nested structures like matching brackets.
+        Nevertheless, FeatShare is able to find the position of a matching bracket/parenthesis with this property.
+        This property takes an associated list of variable-:ref:`subpatterns <subpatterns>` pairs.
+        Each variable stores the matched character for further use and the subpattern from the :std:term:`regex` (e.g.
+        ``$1``).
+
+        .. note::
+            **Note**: The subpattern must entail only **one** character, which is either one of these: ``{``, ``(`` or
+            ``[``.
+
+        The example code below will store the matched character of the open paranthesis which is assumed to be in
+        subpattern ``$2`` into ``parenthesis`` and the curly bracket in subpattern ``$1`` into ``curlyBracket``.
+
+        .. container:: coderef
+
+            | "matchBracket": {
+            |     "parenthesis": "$2",
+            |     "curlyBracket": "$1"
+            | }
 
     storeVars
-        tbd
+        Like in :std:term:`matchBracket<matchBracket>` this associative list of variable-:ref:`subpattern <subpatterns>`
+        pairs can store parts of the matched regex phrase into variables.
+        The stored subpatterns will, unlike any of the other available storing mechanisms, be preserved across anchors.
+        Any of these global variables can then be referenced in **future** anchors.
+        Anchors defined (and thus processed) before the anchors in which the variables are set will not find them.
 
-    hook
-        tbd
+        Stored variables are the only variables that can be used as :std:term:`global dependencies<globalDependencies>`.
+
+        Stored variables are the basis of :ref:`conditional anchors <conditionalAnchor>`.
+
+        .. note::
+            **Note**: These global variables only store the contents of a pattern, not their position properties, as
+            they cannot be carried accross anchors (files).
+
+        .. note::
+            **Note**: If an anchor fails all global variables associated with this anchor will be deleted, regardless of
+            whether those variables had been already defined by previous anchors.
+
+.. _anchors.hook:
+
+Hook
+----
+
+The hook block is defining the points at which new content will be inserted relative to the matched regex patterns.
+The target file may be hooked at one precise position.
+The hook may also span multiple characters (as determinded by :std:term:`hook.length`).
+Thus, new content can not only be added the around a match, but the match itself can also be modified (see
+:std:term:`hook.replace`).
+
+If an anchor does not define a hook, it is a :ref:`conditional anchor<conditionalAnchor>`.
+
+.. glossary::
 
     hook.start
-        tbd
+        (Start) position of the hook.
+        This may be one of the following.
+
+            - **regex subpattern** (e.g. ``$1`` for first :ref:`subpattern <subpatterns>` or ``$0`` for entire match),
+              which will take the starting position of the subpattern
+            - **local variable** (as stored by :std:term:`matchBracket`), which will take the starting position of the
+              contents
+            - **absolute position** (this is not a line number, but a total charachter count), which is rare and is not
+              recommended
+
+        .. note::
+            **Note**: Global variables (as defined in :std:term:`storeVars`) **cannot** be used as they do not carry
+            positional information.
 
     hook.length
-        tbd
+        This specifies the length of the hook.
+        The same values are accepted as for :std:term:`hook.start`, with the difference of retrieving the length of
+        :ref:`subpattern <subpatterns>` or variable instead of the start.
+        The length of the hook does not influence the insertion of new contents directly.
+        Where the new content is added is decided primarily by :std:term:`hook.before`.
 
     hook.before
-        tbd
+        This property is a boolean.
+        If set to ``true``, the new contents will be inserted before the hook.
+        This means on :std:term:`hook.start`, pushing everything to the left.
+
+        If set to ``false``, the new contexts will be inserted after the hook.
+        This means on :std:term:`hook.start` + :std:term:`hook.length` + 1.
 
     hook.replace
-        tbd
+        This associative property of needle-replace pairs can be used to replace :ref:`subpatterns <subpatterns>`
+        of the regex.
+        The needle is a regex subpattern (e.g. ``$1``), the replace phrase is a string.
+        The replace phrase may entail :ref:`constrained repeat-instructions<constrainedRepeatInstructions>`.
+        Parts of the replace phrase may also be enclosed by curly brackets ``{ }`` to constitute replace keywords to be
+        subject to :ref:`final replaces<anchors.finalReplace>`.
 
-    insert
-        tbd
+        .. note::
+            **Note**: The subpattern (e.g. ``$1``) **must lie inside** the hook, meaning between :std:term:`hook.start`
+            and :std:term:`hook.start` + :std:term:`hook.length`.
+
+.. _anchors.insert:
+
+Insert
+------
+
+This set of properties decides what new content is integrated.
+Although, new content is in most cases provided by the :ref:`features <features>`, **how** exactly it will be inserted
+is defined in this part.
+
+.. glossary::
 
     insert.string
-        tbd
+        This phrase will be inserted at the specified :ref:`hook<anchors.hook>`.
+        Aside from literal characters it may be made up of replace keywords (see :std:term:`insert.replace`) or
+        :ref:`repeat-instructions <repeatInstructions>`.
+        The contents passed to the anchor by the :ref:`features <features>` can be inserted by specifying a replace
+        keyword, which can then be referred to by :std:term:`insert.replace` to incorporate the contents from the
+        :ref:`features <features>`.
 
     insert.replace
-        tbd
+        This associative list consists of needle-replace pairs.
+        The needles can be any of the following.
 
-    stripTrailingNL
-        tbd
+            - Replace keyword without the enclosing curly brackets ``{ }``.
+            - Global variable (see :std:term:`storeVars`)
 
-    indent
-        tbd
+        The replace phrase can be any of the following.
 
-    indent.string
-        tbd
+            - Global variable (see :std:term:`storeVars`)
+            - Feature trait (see :ref:`traits <features.traits>`)
+            - Repeat-instructions (see :ref:`repeatInstructions <repeatInstructions>`)
+            - Literal text
 
-    indent.exclFirstLine
-        tbd
+        If the needle is a global variable, it will first be interpreted before searching the :std:term:`insert.string`.
+        This enables to search for phrase which are not known at the time of definition.
 
-    indent.exclHeader
-        tbd
+        For more in depth insight see the :ref:`examples <examples>`.
+
+    insert.stripTrailingNL
+        If ``true``, trailing new lines of the :std:term:`insert.string` will be removed.
+
+    insert.indent
+        This block enables padding the beginning of all lines by phrase (typically for indenting, hence the name)
+
+    insert.indent.string
+        The characters used to prefix all lines, e.g. ``\t\t`` for indenting by two tabs.
+        :ref:`Constrained repeat-instructions <constrainedRepeatInstructions>` may be used, e.g. ``{\t:2}``.
+
+    insert.indent.exclFirstLine
+        If ``true``, do not add indentation to the first line of :std:term:`insert.string`.
+
+    insert.indent.exclHeader
+        If ``true``, the :std:term:`header <setHeader>` (if present) will not be indented.
+
+.. _anchors.environment:
+
+Environment
+-----------
+
+This section defines the embedding of the new content.
+The environment around the new content can be altered with these properties.
+
+.. glossary::
 
     newlinesBefore
-        tbd
+        The number of line breaks before the new content.
 
     newlinesAfter
-        tbd
+        The number of line breaks after the new content.
 
     localHeader
-        tbd
+        A phrase to use as :std:term:`header <setHeader>` instead of the :std:term:`global header <globalHeader>`.
+
+        .. note::
+            **Note**: Do not forget to add comment flags (e.g. ``//``) before the header and a trailing new line if
+            applicable.
+
+        .. note::
+            **Note**: If set to ``""``, the :std:term:`global header <globalHeader>` will be used.
+
 
     setHeader
-        tbd
+        If ``true``, a header will be inserted before the new content.
+        This may either be the :std:term:`global header <globalHeader>` or a :std:term:`local header <localHeader>`.
 
-    finalReplace
-        tbd
+        .. note::
+            **Note**: If :std:term:`hook.before` is ``false``, the header will be inserted between hooked phrase and the
+            new content.
+
+.. _anchors.finalReplace:
+
+FinalReplace
+------------
+
+If, for example, incrementing a value, each insertion will depend on the previous one.
+As it will not be clear before-hand whether a :ref:`feature <features>` can be successfully integrated or neglected when
+applying the changes, the incrementing needs to be done at the very and.
+This is where the finalReplace properties come in.
+
+There may be several needle-replace pairs.
+Each is listed in their own associative list, making up a non-associative list of final replace instructions.
+
+.. note::
+    **Note**: The final replace instructions will be processed in the order they are defined.
+
+.. glossary::
 
     finalReplace.needle
-        tbd
+        This phrase is a replace keyword without curly brackets ``{ }``.
+        It will be searched in all insertions as well as the hooked phrase (if :std:term:`hook.length` > 0).
 
     finalReplace.replace
-        tbd
+        The replace phrase may either be a literal phrase or a global variable (see :std:term:`storeVars`).
 
     finalReplace.incr
-        tbd
+        If the replace phrase is a numeric value, it will be incremented by this amount after every insertion.
+
+        .. note::
+            **Note**: The value will **not** be incremented after every replacement, but after every block.
+            A block being either a feature or the hook phrase (if :std:term:`hook.length` > 0).
+            This means if the :std:term:`insert.string` is referencing the finalReplace.needle twice, both will have the
+            same value.
+            Only after proceeding to the insertion block, it will increase.
+
+        See this short example:
+
+        .. container:: coderef
+
+            | ...
+            |
+            | "insert": {
+            |     "string": "increase this value {idx} twice {idx}\\n",
+            |
+            | ...
+            |
+            | "finalReplace": [
+            |     {
+            |         "needle": "idx",
+            |         "replace": "0",
+            |         "incr": 1
+            |     }
+            | ],
+            |
+            | ...
+
+        This would yield:
+
+        .. container:: coderef
+
+            | increase this value 0 twice 0
+            | increase this value 1 twice 1
+            | increase this value 2 twice 2
+            | increase this value 3 twice 3
+            | ...
 
     finalReplace.first
-        tbd
+        A special phrase may be defined instead of the first replacement.
 
     finalReplace.last
-        tbd
+        A special phrase may be defined instead of the last replacement.
 
-    deleteFiles
-        tbd
+.. _anchors.deleteFiles:
+
+DeleteFiles
+------------
+
+An anchor may not only modify a file, it can also delete other files.
+The files are not connected to the :std:term:`file that this anchor references <path>`.
+An anchor may also just delete files instead of modifying any file.
+See :ref:`conditional anchors<conditionalAnchor>`.
+
+.. glossary::
 
     deleteFiles.paths
-        tbd
+        Non-associative list of relative file paths to files to delete.
+        For security reasons it is not allowed to delete directories and absolute paths are not allowed.
+        File paths may include replace keywords enclosed by curly brackets ``{ }`` to be replaced with
+        :std:term:`global variables <storeVars>` with the instructions in :std:term:`deleteFiles.replace`.
 
     deleteFiles.replace
-        tbd
+        This is an associative list of needle-replace pairs.
+        The needles are replace keywords without curly brackets ``{ }``.
+        The replace phrases may be made up of literal characters (which would not make any sense in this context),
+        :std:term:`global variables <storeVars>` and
+        :ref:`constrained repeat-instructions<constrainedRepeatInstructions>`.
+
+        .. note::
+            **Note**: Because of the nature of processing order regarding :ref:`conditional anchors<conditionalAnchor>`,
+            the :std:term:`global variables <storeVars>` of an anchor are set **after** the deleteFiles instruction is
+            processed.
+            Thus, they cannot be used in the same anchors they are defined.
+            A solution is to define two anchors instead (one sets the global variable, the other references this
+            variable and deletes the files).
+
+.. _anchors.conditions:
+
+Conditions
+----------
+
+Anchors are tied to conditions.
+These conditions define which anchor will be needed for which feature.
+More sophisticated conditions can be implemented with global dependencies.
+See :ref:`conditional anchors<conditionalAnchor>` for more details.
+
+.. glossary::
 
     globalDependencies
-        tbd
+        This non-associative list may hold several conditions on :std:term:`global variables <storeVars>`.
+        There are two types of conditions available.
+
+        Set or not set.
+
+        If an anchor should be processed only if a global variable exists (was set at some previous point), specify the
+        name of the variable (e.g. ``variablename``).
+        If, however, the variable should not exist, than prefix the name of the variable with an exclamation mark (e.g.
+        ``!variablename``).
+        The Prefix ``!`` is a logical not.
+
+        .. note::
+            **Note**: Unlike :std:term:`feature dependencies <dependencies>`, these global dependencies will cause the
+            anchor to fail, if their conditions are not met.
+            See :std:term:`ignoreOnFail` for more information.
 
     dependencies
-        tbd
+        This is a non-associative list holding feature requirements.
+        An anchor will only be processed for :ref:`features <features>` that define the traits listed here.
+        There are two types of conditions available.
+
+        Set or not set.
+
+        If an anchor should only process features that have a certain trait, specify the name of the trait (e.g.
+        ``trait``).
+        If, however, features should not have that trait, than prefix the name of the trait with an exclamation mark
+        (e.g. ``!trait``).
+
+        If a dependency is not met a feature will be skipped.
+        There won't be an error or warning, because this serves to identify the anchors that are needed for a certain
+        feature.
 
     ignoreOnFail
-        tbd
+        Set to ``false``, to output an error when the anchor fails (default and recommended behavior), or set to warning
+        phrase.
+
+        An anchor may fail for many different reasons.
+        Usually it is a good idea to have this cause an error, which will notify the end-user about what went wrong and
+        that the integration was not successful.
+
+        If the anchor is a :ref:`conditional anchor<conditionalAnchor>`, however, an anchor may just fail as a result of
+        an unmet :std:term:`global dependency <globalDependencies>`.
+        See :ref:`conditional anchors<conditionalAnchor>` for more details.
+
+        .. note::
+            **Note**: If an anchor fails all :std:term:`global variables <storeVars>` associated with this anchor will
+            be deleted, regardless of whether those variables had been already defined by previous anchors.
