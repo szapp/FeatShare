@@ -19,7 +19,7 @@ Many features may rely on the same anchors, anchors may be shared accross differ
 There are also special anchors, that are called :ref:`conditional anchors <conditionalAnchor>`.
 
 This is an example anchor with a complete list of settings.
-See :ref:`examples <examples>` to find out what this anchor does.
+See :ref:`Quick Start <tutorial>` to find out what this anchor does (the anchor there might deviate slightly).
 
 .. container:: coderef
 
