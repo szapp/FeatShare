@@ -12,13 +12,13 @@ capitalization differing indices and much more.
 
 If, for example, looking for a variable definition, the target environment might differ from what one would expect.
 
-.. container:: coderef
+.. code-block:: C++
 
-    | var int variable;
+    var int variable;
 
-.. container:: coderef
+.. code-block:: C++
 
-    |   Var  INT  variable ; // Comment
+    Var  INT  variable ; // Comment
 
 Both definitions might be possible (syntax conform), yet differ too much for a normal search.
 Searching for ``var int variable;`` would fail in the second case.

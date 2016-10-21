@@ -37,6 +37,9 @@ In this anchor, the integration of the feature can be implemented.
 Additionally, this anchor should set an :std:term:`ignoreOnFail` message like 'Feature XY already exists'.
 
 Here is an example of these two anchors with two log outputs below.
+A third anchor is added to ensure that the feature really is present in the end.
+This last anchor does not have an :std:term:`ignoreOnFail` message, because if it fails, the setup should termine with
+an error.
 
 .. code-block:: JSON
 
@@ -83,14 +86,27 @@ Here is an example of these two anchors with two log outputs below.
                 "featureXY"
             ],
             "ignoreOnFail": "Feature XY already exists."
+        },
+
+        {
+            "description": "Failed to update/insert Feature XY",
+            "path": "path\\to\\file_to_modify",
+            "globalDependencies": [
+                "XYExists"
+            ],
+            "dependencies": [
+                "featureXY"
+            ],
+            "ignoreOnFail": false
         }
+
     ]
 
 If feature XY already exists, the log will look like this
 
 .. code-block:: none
 
-    1970-01-01 00:00:00 :: WARNING  :: Anchor #2(file_to_modify): RegEx not matched: [i] 'some content after which to integrate the feature' - Feature XY already exists.
+    1970-01-01 00:00:00 :: WARNING  :: Anchor #2(file_to_modify): Global dependency not met: !XYExists - Feature XY already exists.
 
 If feature XY does not already exist, the log will look like this
 
@@ -98,9 +114,16 @@ If feature XY does not already exist, the log will look like this
 
     1970-01-01 00:00:00 :: WARNING  :: Anchor #1(file_to_modify): RegEx not matched: [i] 'some line that only exists if the feature is present' - Feature XY not found. Will integrate it now.
 
-Since a :std:term:`ignoreOnFail` message is set, the integration will not fail (stop due to an error) in either case,
-but merely display the warnings seen above.
+If for some reason both anchors fail and the feature XY is not successfully integrated, the log will look like this
+
+.. code-block:: none
+
+    1970-01-01 00:00:00 :: ERROR    :: Anchor #3(file_to_modify): Global dependency not met: XYExists - Failed to update/insert Feature XY
+
+Since a :std:term:`ignoreOnFail` message is set for the first two anchors, the integration will not fail (stop due to an
+error) in either case, but merely display the warnings seen above.
 After both cases feature XY will be integrated, regardless of whether it was present or not.
+This is asserted by the third anchor, which, in turn, will terminate the setup with an error.
 This is how an update or patch setup can be created.
 
 .. note::
