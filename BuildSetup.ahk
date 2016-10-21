@@ -136,7 +136,7 @@ template := "#SingleInstance, ignore`n"
     . "    SplitPath, file, , dir`n"
     . "    FileCreateDir, %destDir%\%dir%`n"
     . "}`n"
-    . "FileInstall, FeatShare.exe, %destDir%\FeatShare.exe, 1`n"
+    . "FileInstall, bin\FeatShare.exe, %destDir%\FeatShare.exe, 1`n"
     . "/*###INSTINSTRUCT###*/`n" // FileInstall instructions for all files to unpack
     . "RunWait, %destDir%\FeatShare.exe, %destDir%, UseErrorLevel`n" // Run FeatShare.exe
     . "err := ErrorLevel`n"
@@ -175,6 +175,7 @@ for relPath, filepath in packFiles {
 template := StrReplace(template, "/*###FILELIST###*/", Trim(fileList, "`n"))
 template := StrReplace(template, "/*###INSTINSTRUCT###*/", Trim(installStr, "`n"))
 bin := "" // Free bin, because it was used before. Must be empty
+VarSetCapacity(bin, 0) // Explicitly shrink the variable (free its memory)
 VarSetCapacity(bin, StrLen(template), 0), P := &bin
 Loop, Parse, template
     NumPut(Asc(A_LoopField), P+0, 0, "Char"), P := P+1
