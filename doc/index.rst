@@ -78,6 +78,7 @@ The following third-party software is used (without adding any modifications).
         anchors
         features
         felper
+        buildSetup
         examples
         license
         reference

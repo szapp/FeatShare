@@ -262,7 +262,7 @@ Now we create a setup from the created files.
 
 .. note::
     **Note**: For details on how to build a setup from these three types of files (configuration, anchors, features) see
-    :ref:`BuildSetup <buildSetup>`.
+    :ref:`Build Setup <buildSetup>`.
 
 Result
 ------
