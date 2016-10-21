@@ -7,7 +7,7 @@
 
    * -  .. image:: /_static/images/icon.png
           :alt:
-     -  | **FeatShare v0.1-beta**
+     -  | **FeatShare v0.2**
         | Copyright |copy| 2016  szapp
         | `http://github.com/szapp/FeatShare <http://github.com/szapp/FeatShare>`_
 

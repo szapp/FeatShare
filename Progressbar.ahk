@@ -1,7 +1,7 @@
 /**
  * Progressbar class - Tailored to FeatShare.ahk
  *
- * FeatShare v0.1-beta - Text integration tool
+ * FeatShare v0.2 - Text integration tool
  * Copyright (C) 2016  szapp <http://github.com/szapp>
  *
  * This file is part of FeatShare.
