@@ -2,7 +2,7 @@
 /**
  * BuildSetup.ahk - This is a tool to wrap all necessary files into one setup.
  *
- * FeatShare v0.1-beta - Text integration tool
+ * FeatShare v0.2 - Text integration tool
  * Copyright (C) 2016  szapp <http://github.com/szapp>
  *
  * This file is part of FeatShare.
