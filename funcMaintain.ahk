@@ -599,9 +599,9 @@ validateConfig(ByRef config) {
     // Field: features.path, default: ""
     if  !config.features.HasKey("path")
         config.features.path := ""
-    // Field: features.filePattern, default: ".*"
+    // Field: features.filePattern, default: "^.*\.(?!json$)(?!exe$)"
     if  !config.features.HasKey("filePattern")
-        config.features.filePattern := ".*"
+        config.features.filePattern := "^.*\.(?!json$)(?!exe$)"
     // Field: features.anchorPattern
     if  !IsObject(config.features.anchorPattern)
         config.features.anchorPattern := {}

@@ -39,7 +39,7 @@ This is a complete ``config.json`` with all its default values.
     |     },
     |     :ref:`"features" <config.features>`: {
     |         :std:term:`"path" <features.path>`: "",
-    |         :std:term:`"filePattern" <features.filePattern>`: ".*",
+    |         :std:term:`"filePattern" <features.filePattern>`: "^.*\\\\.(?!json$)(?!exe$)",
     |         :ref:`"anchorPattern" <features.anchorPattern>`: {
     |             :std:term:`"regex" <features.anchorPattern.regex>`: "### ([\\\\w\\\\*\\\\(\\\\)\\\\.\\\\:_]+) ###\\\\R(.*)\\\\R### [\\\\w\\\\*\\\\(\\\\)\\\\.\\\\:_]+ ###",
     |             :std:term:`"flags" <features.anchorPattern.flags>`: {
